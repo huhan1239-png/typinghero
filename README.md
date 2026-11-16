@@ -159,7 +159,6 @@ python -m http.server 8000
 
 ```
 index.html                     # 完整应用：样式、素材、逻辑全在这一个文件里
-打字小英雄 - v1.0归档.html      # 初代版本，留作对照
 docs/screenshots/              # README 用截图
 LICENSE
 README.md
