@@ -32,7 +32,7 @@
 
 **成绩统计 · 速度曲线**
 
-<img src="docs/screenshots/stats.png" width="620" alt="成绩统计 · 速度曲线">
+![成绩统计 · 速度曲线](docs/screenshots/stats.png)
 
 ## 目标用户
 
