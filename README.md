@@ -26,13 +26,9 @@
 |---|---|
 | ![好词积累](docs/screenshots/cn_word.png) | ![Python 代码](docs/screenshots/py_code.png) |
 
-| 结算页 · 星级与速度档位 |
-|---|
-| ![结算页](docs/screenshots/result.png) |
-
-**速度档位对照表 · 结算页的档位即来源于此**
-
-![速度档位对照表](docs/screenshots/tiers.png)
+| 结算页 · 星级与速度档位 | 速度档位对照表 |
+|---|---|
+| ![结算页](docs/screenshots/result.png) | ![速度档位对照表](docs/screenshots/tiers.png) |
 
 **成绩统计 · 速度曲线**
 
