@@ -10,6 +10,7 @@ desktop.ini
 
 # 截图生成过程的临时文件
 _screenshot-*.html
+_shot-*.html
 
 # 写作工具的工作目录
 .writing/
