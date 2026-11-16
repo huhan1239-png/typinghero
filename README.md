@@ -30,6 +30,10 @@
 |---|
 | ![结算页](docs/screenshots/result.png) |
 
+**速度档位对照表 · 结算页的档位即来源于此**
+
+![速度档位对照表](docs/screenshots/tiers.png)
+
 **成绩统计 · 速度曲线**
 
 <img src="docs/screenshots/stats.png" width="620" alt="成绩统计 · 速度曲线">
