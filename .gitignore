@@ -1,0 +1,15 @@
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# 本地家庭版（含个性化寄语，不随仓库发布）
+打字小英雄-家庭版.html
+
+# 截图生成过程的临时文件
+_screenshot-*.html
+
+# 写作工具的工作目录
+.writing/

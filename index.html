@@ -1,0 +1,2870 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<!--
+  版本信息的唯一来源（Single Source of Truth）。
+  修改功能后，请更新下方 version、updatedAt，并在 history 顶部追加记录。
+  具体升级规则见 versionPolicy 字段。
+-->
+<script type="application/json" id="app-meta">
+{
+  "schemaVersion": 1,
+  "app": "typinghero",
+  "name": "打字小英雄",
+  "version": "1.2.2",
+  "updatedAt": "2026-11-16",
+  "versionPolicy": {
+    "major": "重大重构或不兼容改版：第一位 +1，其余归零",
+    "minor": "大功能：第二位 +1，第三位归零",
+    "patch": "小功能或小修复：第三位 +1"
+  },
+  "history": [
+    {
+      "version": "1.2.2",
+      "date": "2026-11-16",
+      "type": "patch",
+      "summary": "家长寄语改为可配置项 FAMILY_NOTE（姓名与内容留空即关闭），源码不再内置个人信息；整理为开源发布版本"
+    },
+    {
+      "version": "1.2.1",
+      "date": "2026-09-19",
+      "type": "patch",
+      "summary": "修复左上角标题图标显示异常：⌨️ 落在渐变文字里被渲染成纯色色块，改为内联 SVG 键盘图标，不再依赖 emoji 字体"
+    },
+    {
+      "version": "1.2.0",
+      "date": "2026-09-19",
+      "type": "minor",
+      "summary": "新增「指法练习」模式：6 个手指分区关卡（中排定位→大写 Shift），键盘按手指配色、双手示意与当前手指提示；每局按击键正确率、节奏稳定度、Shift 规范度合成指法分与称号，成绩单独记录并在成绩页新增指法筛选"
+    },
+    {
+      "version": "1.1.10",
+      "date": "2026-09-19",
+      "type": "patch",
+      "summary": "修复打字页实时速度放大 1000 倍的问题：秒转分钟的分母由 60000 更正为 60，实时速度与最终成绩口径一致"
+    },
+    {
+      "version": "1.1.9",
+      "date": "2026-09-19",
+      "type": "patch",
+      "summary": "计时改为按下第一个字符才开始，打字页用时显示 1 位小数；新增隐藏彩蛋（英文450=三体水滴，中文200=满汉全席），彩蛋成绩不写入历史"
+    },
+    {
+      "version": "1.1.8",
+      "date": "2026-09-19",
+      "type": "patch",
+      "summary": "成绩明细区新增两张按语言拆分的折线图，显示所选当天每一次练习的速度变化，随选天联动"
+    },
+    {
+      "version": "1.1.7",
+      "date": "2026-09-19",
+      "type": "patch",
+      "summary": "中文速度档位由 10 档改为 15 档（每档 10 字符/分钟，0-150），删除牛排并把牛排图标给和牛"
+    },
+    {
+      "version": "1.1.6",
+      "date": "2026-09-19",
+      "type": "patch",
+      "summary": "首页新增「游戏说明」：五种练习模式的玩法说明，以及中英文两套速度档位表（图标+名称+速度区间）；羽毛球说明页保持不变"
+    },
+    {
+      "version": "1.1.5",
+      "date": "2026-09-19",
+      "type": "patch",
+      "summary": "羽毛球新增「游戏说明」页：玩法、四种击球、难度时长，以及完整的 15 档速度档位表（图标+名称+速度区间）"
+    },
+    {
+      "version": "1.1.4",
+      "date": "2026-09-19",
+      "type": "patch",
+      "summary": "英文速度前段 0-150 由 5 档细分为 10 档（每档 15），后段 150-300 保持 5 档不变，共 15 档，让起步阶段更容易看到进步"
+    },
+    {
+      "version": "1.1.3",
+      "date": "2026-09-19",
+      "type": "patch",
+      "summary": "好词积累改为 831 条成语（四级各超 200 条，围绕品德、为人处事、修身律己、君子之道）并启用成语专属分级标题，与校内美文标题分离；英文速度档位改为草履虫→火箭"
+    },
+    {
+      "version": "1.1.2",
+      "date": "2026-09-19",
+      "type": "patch",
+      "summary": "校正中英文速度档位（英文草履虫→高铁，中文白粥→和牛），为每档配图标；结果页新增大档位图标并弱化星级"
+    },
+    {
+      "version": "1.1.1",
+      "date": "2026-09-19",
+      "type": "patch",
+      "summary": "羽毛球模式扩充专用词库至 248 词（四级按长度分级），改为整局去重抽词，同一局内不再出现重复单词"
+    },
+    {
+      "version": "1.1.0",
+      "date": "2026-09-19",
+      "type": "minor",
+      "summary": "羽毛球游戏模式：球高即剩余时间预算，零等待无死亡，速度自适应；三档难度（简单60秒/中等90秒/困难120秒，独立最佳成绩与星级门槛）；四种击球动画（杀球/平抽/挑高/漏球）"
+    },
+    {
+      "version": "1.0.3",
+      "date": "2026-09-19",
+      "type": "patch",
+      "summary": "成绩模块：指标卡不折行，中英文速度拆为两张按天平均的曲线，新增可选天的练习明细表"
+    },
+    {
+      "version": "1.0.2",
+      "date": "2026-09-19",
+      "type": "patch",
+      "summary": "家长寄语扩充到 20 条"
+    },
+    {
+      "version": "1.0.1",
+      "date": "2026-09-19",
+      "type": "patch",
+      "summary": "首页为指定用户随机显示家长寄语"
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-09-19",
+      "type": "baseline",
+      "summary": "建立版本号体系：页头版本徽标、机器可读元数据与版本记录"
+    }
+  ]
+}
+</script>
+<title>打字小英雄 - 快乐打字练习</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg1:#eef3ff;--bg2:#fff3f7;
+  --ink:#3a3f58;--muted:#8a90ab;
+  --brand:#5b6cff;--brand2:#ff7aa2;
+  --ok:#2ecc71;--err:#ff4d5e;
+  --card:#ffffff;--line:#e6e9f5;
+  --radius:22px;
+  --shadow:0 10px 30px rgba(90,100,180,.12);
+}
+html,body{height:100%}
+body{
+  font-family:'Microsoft YaHei','Segoe UI',Arial,sans-serif;
+  background:linear-gradient(160deg,var(--bg1),var(--bg2));
+  color:var(--ink);
+  min-height:100%;
+  overflow-x:hidden;
+}
+#app{width:100%;max-width:none;margin:0 auto;padding:16px}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:10px 4px 14px}
+/* 标题图标用内联 SVG：不依赖 emoji 字体，
+   也避免落在 background-clip:text 的渐变文字里被渲染成纯色色块。 */
+.logo{display:flex;align-items:center;gap:9px;font-size:26px;font-weight:800;letter-spacing:1px}
+.logo-icon{width:31px;height:23px;flex:none;display:block}
+.logo-text{background:linear-gradient(90deg,var(--brand),var(--brand2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand{display:flex;align-items:center;gap:8px;min-width:0}
+.version-badge{flex:none;font-size:12px;font-weight:800;color:var(--brand);background:#eef0ff;border:1px solid #dfe3ff;border-radius:99px;padding:3px 9px;letter-spacing:.5px;white-space:nowrap}
+.topbar-user{font-size:15px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.page{display:none}
+.page.active{display:block;animation:fadeIn .35s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.btn{
+  border:none;cursor:pointer;font-family:inherit;font-size:18px;font-weight:700;
+  border-radius:16px;padding:12px 22px;transition:transform .12s,box-shadow .12s;
+  display:inline-flex;align-items:center;gap:6px;justify-content:center;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:scale(.96)}
+.btn-primary{background:linear-gradient(135deg,var(--brand),#8b7bff);color:#fff;box-shadow:0 6px 18px rgba(91,108,255,.35)}
+.btn-ghost{background:#fff;color:var(--brand);border:2px solid var(--line)}
+.btn-sm{padding:8px 14px;font-size:15px}
+/* ---- 登录页 ---- */
+.auth-box{max-width:440px;margin:6vh auto 0;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:30px;text-align:center}
+.auth-box h1{font-size:26px;margin-bottom:18px}
+.user-list{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:18px;min-height:20px}
+.user-tile{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:8px 10px;border-radius:16px;border:2px solid transparent;background:#f5f6ff;transition:.15s}
+.user-tile:hover{border-color:var(--brand)}
+.user-tile .av{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;font-weight:800}
+.user-tile .nm{font-size:13px;color:var(--ink);max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.avatar{width:44px;height:44px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:20px}
+.auth-form{display:flex;flex-direction:column;gap:10px}
+.auth-form input{font-family:inherit;font-size:18px;padding:12px 16px;border-radius:14px;border:2px solid var(--line);outline:none;background:#fafbff}
+.auth-form input:focus{border-color:var(--brand)}
+.auth-btns{display:flex;gap:10px;margin-top:6px}
+.auth-btns .btn{flex:1}
+.auth-tip{font-size:14px;color:var(--muted);margin-top:10px;line-height:1.7}
+/* ---- 主页 ---- */
+.welcome{font-size:24px;text-align:center;margin:26px 0 22px;font-weight:700}
+.son-note{max-width:760px;margin:-8px auto 24px;padding:14px 20px;background:linear-gradient(135deg,#fff6fa,#eef2ff);border:1px solid #e6e9ff;border-radius:18px;color:#4a5170;font-size:15px;font-weight:700;line-height:1.8;text-align:center;box-shadow:0 6px 18px rgba(90,100,180,.08)}
+.son-note::before{content:'💙 ';font-size:15px}
+.son-note[hidden]{display:none}
+.home-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:none;cursor:pointer;padding:24px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;transition:transform .15s;font-family:inherit}
+.card:hover{transform:translateY(-6px) rotate(-1deg)}
+.card-emoji{font-size:52px;line-height:1}
+.card-title{font-size:19px;font-weight:800;color:var(--ink)}
+.card-sub{font-size:13px;color:var(--muted)}
+.home-btns{display:flex;gap:14px;justify-content:center;margin-top:28px}
+/* ---- 难度页 ---- */
+#page-level{text-align:center;padding-top:24px}
+#page-level h2{font-size:24px;margin-bottom:24px}
+#page-game-diff{text-align:center;padding-top:24px}
+#page-game-diff h2{font-size:24px;margin-bottom:24px}
+.gd-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+/* ---- 游戏说明页 ---- */
+#page-game-help{text-align:center;padding-top:24px}
+#page-game-help h2{font-size:24px;margin-bottom:20px}
+#page-help{text-align:center;padding-top:24px}
+#page-help h2{font-size:24px;margin-bottom:20px}
+.help-box{max-width:720px;margin:0 auto 24px;text-align:left}
+.help-sec{background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:18px 22px;margin-bottom:14px}
+.help-title{font-size:16px;font-weight:800;color:var(--brand);margin-bottom:10px}
+.help-p{font-size:14px;line-height:1.9;color:var(--ink);margin-bottom:8px}
+.help-p:last-child{margin-bottom:0}
+.help-p b{color:var(--brand)}
+.hit-list{display:flex;flex-direction:column;gap:9px}
+.hit-row{display:flex;gap:12px;align-items:baseline;font-size:13px;line-height:1.7}
+.hit-row b{flex:none;min-width:96px;font-size:13px}
+.hit-row span{color:var(--muted)}
+.hit-smash{color:#d99b00}
+.hit-drive{color:#0d8fb8}
+.hit-lift{color:#7c86b8}
+.hit-miss{color:var(--err)}
+.diff-help{display:flex;flex-direction:column;gap:8px}
+.diff-help-row{display:flex;gap:12px;align-items:baseline;font-size:13px;line-height:1.7}
+.diff-help-row b{flex:none;min-width:96px;color:var(--ink)}
+.diff-help-row span{color:var(--muted)}
+/* 档位表：图标 + 名称 + 速度区间 */
+.tier-table{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tier-cell{display:flex;align-items:center;gap:8px;background:#f7f8ff;border-radius:12px;padding:9px 12px}
+.tier-cell .tc-icon{font-size:24px;line-height:1;flex:none}
+.tier-cell .tc-txt{min-width:0;display:flex;flex-direction:column}
+.tier-cell .tc-name{font-size:13px;font-weight:800;color:var(--ink);white-space:nowrap;line-height:1.3}
+.tier-cell .tc-range{font-size:11px;color:var(--muted);white-space:nowrap;line-height:1.3}
+.tier-cell.top{background:linear-gradient(135deg,#fff5e0,#ffe9ef)}
+@media(max-width:640px){
+  .tier-table{grid-template-columns:repeat(2,1fr)}
+  .hit-row,.diff-help-row{flex-direction:column;gap:2px}
+  .hit-row b,.diff-help-row b{min-width:0}
+  #page-result.finger .result-stats{grid-template-columns:repeat(2,1fr)}
+}
+.level-list{display:flex;flex-direction:column;gap:16px;max-width:540px;margin:0 auto 24px}
+.level-item{display:flex;align-items:center;gap:18px;background:var(--card);border-radius:20px;box-shadow:var(--shadow);border:none;cursor:pointer;padding:18px 26px;text-align:left;font-family:inherit;transition:transform .15s}
+.level-item:hover{transform:translateX(6px)}
+.level-item .lv{font-size:34px}
+.level-item .lt{font-weight:800;font-size:18px;color:var(--ink)}
+.level-item .ld{font-size:13px;color:var(--muted);margin-top:4px}
+.level-item.python-level .lt,
+.level-item.python-level .ld,
+.level-item.python-level .ls{color:#2e3352;font-weight:800;opacity:1;font-family:'Microsoft YaHei','Segoe UI',sans-serif;text-shadow:none;-webkit-text-stroke:0}
+.python-level-page h2{font-family:'Microsoft YaHei','Segoe UI',sans-serif;color:#2e3352;text-shadow:none;-webkit-text-stroke:0}
+.level-item .ls{margin-left:auto;font-size:15px;color:#f5b342;letter-spacing:2px;white-space:nowrap}
+/* 指法关卡用文字徽标代替大 emoji */
+.level-item.finger-level .lv{font-size:15px;font-weight:800;color:#fff;background:linear-gradient(135deg,#c2603c,#8a4a86);border-radius:12px;padding:8px 10px;min-width:58px;text-align:center;white-space:nowrap}
+/* ---- 练习页 ---- */
+.prac-head{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.prac-title{font-size:17px;font-weight:800;flex:1;line-height:1.4}
+.prac-meters{display:flex;gap:14px;font-size:13px;color:var(--muted);font-weight:700;white-space:nowrap}
+.meter b{color:var(--brand);font-size:15px}
+.meter.err b{color:var(--err)}
+.prac-progress{height:12px;background:#e7eaf6;border-radius:99px;overflow:hidden;margin-bottom:14px}
+.prac-progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--brand),var(--brand2));border-radius:99px;transition:width .15s}
+ .prac-text{width:100%;min-height:120px;max-height:34vh;overflow-y:auto;background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:18px 20px;font-size:26px;line-height:1.95;letter-spacing:1px;font-family:'Consolas','Courier New','Microsoft YaHei',monospace;user-select:none}
+.prac-text .row{white-space:normal;word-break:break-word}
+.prac-text .ch{transition:background .08s;border-radius:6px;padding:0 1px}
+.prac-text .ch.done{color:var(--ok);background:rgba(46,204,113,.14)}
+.prac-text .ch.cur{background:rgba(91,108,255,.16);box-shadow:0 0 0 2px var(--brand);color:var(--ink);border-radius:6px;animation:pulse .9s infinite}
+.prac-text .ch.bad{color:var(--err);background:rgba(255,77,94,.16);text-decoration:underline wavy var(--err)}
+.prac-text .ch.space{display:inline-block;color:transparent;min-width:.72em}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 2px var(--brand)}50%{box-shadow:0 0 0 4px rgba(91,108,255,.28)}}
+.prac-hint{min-height:30px;text-align:center;font-size:16px;color:var(--muted);margin-top:10px;font-weight:700}
+.cn-input{display:block;position:sticky;bottom:10px;z-index:6;width:100%;height:50px;margin-top:12px;border:2px dashed #c9cdf0;border-radius:14px;background:#fff;font-family:inherit;font-size:22px;text-align:left;padding:0 16px;outline:none;color:var(--ink);box-shadow:0 8px 22px rgba(90,100,180,.18)}
+.cn-input:focus{border-color:var(--brand);border-style:solid}
+/* ---- 84 键键盘 ---- */
+.kb{background:#2e3352;border-radius:20px;padding:12px 14px 16px;margin-top:14px;box-shadow:inset 0 -4px 0 #232743, 0 14px 30px rgba(46,51,82,.35);user-select:none;pointer-events:none;position:sticky;bottom:8px;z-index:5}
+.kb-row{display:flex;gap:8px;margin-bottom:8px}
+.kb-row:last-child{margin-bottom:0}
+.key{position:relative;flex:1;height:46px;background:#f4f5ff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#3a3f58;box-shadow:0 3px 0 #c9cdf0;transition:transform .05s}
+.key.space{flex:5.4}
+.key.hot{background:var(--brand);color:#fff;box-shadow:0 3px 0 #4652c9;transform:scale(1.12);z-index:2}
+.key.hot.shift-on::after{content:'⇧';position:absolute;top:2px;right:4px;font-size:11px;color:#ffe08a}
+.key.shake{animation:kbShake .25s}
+/* ---- 手指分区配色：所有打字键盘通用，每个键按负责它的手指上色 ---- */
+.kb.finger .key[data-finger]{background:var(--fbg);box-shadow:0 3px 0 var(--fc);color:#4a4260}
+.kb.finger .key.hot{background:var(--fc);color:#fff;box-shadow:0 3px 0 rgba(0,0,0,.28)}
+.kb.finger .key.hot.shift-on::after{color:#fff}
+/* ---- 指法教练面板：双手示意 + 当前手指（仅指法练习显示） ---- */
+.finger-coach{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:10px 16px;margin-top:12px}
+.finger-coach[hidden]{display:none}
+.fc-hands{width:min(360px,80%);}
+.finger-hand{width:100%;display:block}
+.fh-palm{fill:#eef1fb}
+.fh-finger{fill:var(--fc);opacity:.28;transition:opacity .12s}
+.fh-finger.active{opacity:1;animation:fingerPulse .7s infinite}
+@keyframes fingerPulse{0%,100%{opacity:1}50%{opacity:.55}}
+.fc-text{font-size:17px;font-weight:800;color:var(--ink);text-align:center}
+.fc-text b{color:var(--brand);font-size:19px}
+.fc-tip{font-size:12px;color:var(--muted);letter-spacing:.5px}
+@keyframes kbShake{0%,100%{transform:translateX(0)}30%{transform:translateX(-4px)}70%{transform:translateX(4px)}}
+.kb-tip{text-align:center;color:#a7b0d8;font-size:12px;margin-top:9px;letter-spacing:1px}
+/* ---- 结果页 ---- */
+.result-box{max-width:540px;margin:6vh auto 0;background:var(--card);border-radius:26px;box-shadow:var(--shadow);padding:34px;text-align:center}
+/* 结果页：大图标是主角，星级弱化为次要信息 */
+.result-tier-icon{font-size:86px;line-height:1;margin-bottom:2px}
+.result-tier-name{font-size:16px;font-weight:800;color:var(--brand);letter-spacing:2px;margin-bottom:10px}
+/* 彩蛋：整张结果卡换成金色高亮，图标更突出 */
+#page-result.egg .result-box{background:linear-gradient(160deg,#fffaf0,#fff4f8);box-shadow:0 14px 40px rgba(217,155,0,.22);border:2px solid #ffe2a8}
+#page-result.egg .result-tier-icon{font-size:104px;animation:eggPop .5s ease}
+#page-result.egg .result-tier-name{color:#c98a00;font-size:20px}
+#page-result.egg .result-stars{opacity:.35}
+/* 彩蛋文案较长，允许换行完整显示（普通结果仍保持单行省略） */
+#page-result.egg .result-msg{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.7}
+@keyframes eggPop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+.result-stars{font-size:20px;margin-bottom:10px;min-height:22px;opacity:.5;letter-spacing:2px}
+.result-box h2{font-size:26px;margin-bottom:14px}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.stat-cell{background:#f5f6ff;border-radius:16px;padding:14px 6px}
+.stat-cell .v{font-size:24px;font-weight:800;color:var(--brand)}
+.stat-cell .k{font-size:12px;color:var(--muted);margin-top:4px}
+.result-msg{font-size:17px;color:var(--muted);margin-bottom:18px;min-height:26px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.result-next{font-size:14px;color:var(--brand);font-weight:800;margin:-6px 0 14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.result-btns{display:flex;gap:12px;justify-content:center}
+/* 指法结果：暖色主题 + 三项得分分解 */
+#page-result.finger .result-box{background:linear-gradient(160deg,#fffaf4,#fff2f5);border:2px solid #ffdcc2}
+#page-result.finger .result-tier-name{color:#b4622f}
+#page-result.finger .result-stats{grid-template-columns:repeat(4,1fr)}
+.finger-breakdown{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;text-align:left}
+.finger-breakdown[hidden]{display:none}
+.fb-row{display:flex;align-items:center;gap:10px;background:#fff4ea;border-radius:12px;padding:8px 14px;font-size:14px;font-weight:700;color:var(--ink)}
+.fb-row span{flex:1}
+.fb-row i{font-style:normal;font-size:12px;color:var(--muted);font-weight:700}
+.fb-row b{font-size:16px;color:#b4622f;min-width:34px;text-align:right}
+/* 指法反馈文字较长，允许换行完整显示 */
+#page-result.finger .result-msg{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.7}
+#page-result.finger .result-next{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.5}
+/* ---- 成绩页 ---- */
+#page-stats{padding-top:10px;text-align:center}
+#page-stats h2{font-size:24px;margin-bottom:14px}
+.stats-chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.chip{font-family:inherit;font-size:14px;font-weight:700;border:2px solid var(--line);background:#fff;color:var(--muted);border-radius:99px;padding:7px 14px;cursor:pointer;transition:.15s}
+.chip.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.stats-cards{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-bottom:16px}
+.mini-card{flex:1 1 auto;min-width:118px;background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:14px 10px}
+.mini-card .mv{font-size:22px;font-weight:800;color:var(--brand);line-height:1.2;white-space:nowrap}
+.mini-card .mk{font-size:12px;color:var(--muted);margin-top:4px;white-space:nowrap}
+.chart-box{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:16px;margin-bottom:18px}
+.chart-empty{color:var(--muted);font-size:15px;padding:44px 0}
+.chart-title{font-size:15px;font-weight:800;color:var(--ink);text-align:left;margin-bottom:6px}
+.chart-title .ct-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle}
+.detail-box{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:16px;margin-bottom:18px;text-align:left}
+.detail-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.detail-title{font-size:15px;font-weight:800;color:var(--ink)}
+.day-select{font-family:inherit;font-size:14px;font-weight:700;color:var(--ink);background:#f5f6ff;border:2px solid var(--line);border-radius:12px;padding:8px 12px;cursor:pointer;outline:none;max-width:100%}
+.day-select:focus{border-color:var(--brand)}
+.detail-table{width:100%;border-collapse:collapse;font-size:14px}
+.detail-table th{font-size:12px;color:var(--muted);font-weight:800;text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);white-space:nowrap}
+.detail-table td{padding:10px;border-bottom:1px solid #f0f2fa;color:var(--ink);white-space:nowrap}
+.detail-table tr:last-child td{border-bottom:none}
+.detail-table .td-speed{font-weight:800;color:var(--brand)}
+.detail-table .td-acc{font-weight:700}
+.detail-table .td-acc.warn{color:var(--err)}
+.detail-empty{color:var(--muted);font-size:14px;padding:22px 0;text-align:center}
+/* 明细区折线图：按语言各一张，横轴是当天第几次练习 */
+.detail-charts{margin-top:16px;padding-top:14px;border-top:1px solid #f0f2fa;display:flex;flex-direction:column;gap:14px}
+/* ---- 羽毛球游戏模式 ---- */
+.mode-banners{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:860px;margin:26px auto 0}
+.game-banner{display:flex;align-items:center;gap:12px;width:100%;padding:13px 16px;border:none;cursor:pointer;text-align:left;font-family:inherit;color:#fff;background:linear-gradient(135deg,#2f6b4a,#1f4a7a);border-radius:18px;box-shadow:0 10px 26px rgba(31,74,122,.35);transition:transform .15s}
+.game-banner:hover{transform:translateY(-3px)}
+.game-banner .gb-icon{font-size:28px;line-height:1}
+.game-banner .gb-txt{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.game-banner .gb-txt b{font-size:16px;white-space:nowrap}
+.game-banner .gb-txt i{font-style:normal;font-size:12px;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.game-banner .gb-go{font-size:13px;font-weight:800;background:rgba(255,255,255,.18);border-radius:99px;padding:6px 11px;white-space:nowrap}
+.finger-banner{background:linear-gradient(135deg,#c2603c,#8a4a86);box-shadow:0 10px 26px rgba(138,74,134,.32)}
+.game-wrap{max-width:620px;margin:0 auto}
+/* 游戏页键盘不吸底，避免盖住单词区；整屏高度已收窄到可完整显示 */
+#page-game .kb{position:static;margin-top:12px}
+.game-head{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.game-hud{display:flex;align-items:center;gap:16px;flex:1;justify-content:center;font-size:16px;font-weight:800;color:var(--ink)}
+.game-hud i{font-style:normal}
+.game-hud .gh-time{font-family:'Consolas','Courier New',monospace;font-size:22px;color:var(--brand);min-width:56px;text-align:center}
+.game-hud .gh-me b{color:#2f6b4a}
+.game-hud .gh-op b{color:#b5462f}
+.gh-combo{min-width:92px;text-align:right;font-size:14px;font-weight:800;color:#e08b1a;white-space:nowrap}
+.game-diff-tag{text-align:center;font-size:12px;font-weight:800;color:var(--muted);margin-bottom:8px}
+.game-diff-tag b{color:var(--brand)}
+.game-stage{position:relative;background:#0b1026;border-radius:14px;overflow:hidden;box-shadow:0 12px 30px rgba(11,16,38,.35);line-height:0}
+#gameCanvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges}
+.game-toast{position:absolute;left:50%;top:26%;transform:translate(-50%,-50%);font-size:30px;font-weight:900;color:#fff;text-shadow:0 3px 0 #b5462f,0 0 10px rgba(0,0,0,.6);pointer-events:none;opacity:0;transition:opacity .12s}
+.game-toast.show{opacity:1}
+.game-word{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:16px 20px;min-height:76px;margin-top:12px;font-size:32px;line-height:1.6;letter-spacing:2px;font-family:'Consolas','Courier New','Microsoft YaHei',monospace;user-select:none;text-align:center}
+.game-word .row{white-space:normal;word-break:break-word}
+.game-word .ch{transition:background .08s;border-radius:6px;padding:0 2px}
+.game-word .ch.done{color:var(--ok);background:rgba(46,204,113,.14)}
+.game-word .ch.cur{background:rgba(91,108,255,.16);box-shadow:0 0 0 2px var(--brand);color:var(--ink);animation:pulse .9s infinite}
+.game-word .ch.bad{color:var(--err);background:rgba(255,77,94,.16);text-decoration:underline wavy var(--err)}
+.game-word .ch.space{display:inline-block;color:transparent;min-width:.72em}
+.game-nokb{text-align:center;color:var(--muted);font-size:14px;font-weight:700;padding:18px 0}
+/* ---- toast ---- */
+.toast{position:fixed;left:50%;bottom:36px;transform:translateX(-50%) translateY(20px);background:#2e3352;color:#fff;padding:12px 22px;border-radius:99px;font-size:15px;font-weight:700;opacity:0;pointer-events:none;transition:.3s;z-index:99}
+.toast.show{opacity:1;transform:translateX(-50%)}
+/* ---- confetti ---- */
+.confetti{position:fixed;width:10px;height:10px;top:-12px;border-radius:2px;animation:fall linear forwards;z-index:50;pointer-events:none}
+@keyframes fall{to{transform:translateY(108vh) rotate(720deg);opacity:.4}}
+@media(max-width:860px){
+  .home-cards{grid-template-columns:repeat(2,1fr)}
+  .mode-banners{grid-template-columns:1fr}
+  .mini-card{min-width:calc(50% - 6px);flex:1 1 calc(50% - 6px)}
+  .key{font-size:12px;height:40px}
+  .kb{padding:10px}
+  .prac-text{font-size:22px}
+  .logo{font-size:22px;gap:7px}
+  .logo-icon{width:26px;height:19px}
+  .version-badge{font-size:11px;padding:2px 7px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">
+        <svg class="logo-icon" viewBox="0 0 34 24" aria-hidden="true">
+          <defs>
+            <linearGradient id="logoKeyGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#5b6cff"/>
+              <stop offset="1" stop-color="#ff7aa2"/>
+            </linearGradient>
+          </defs>
+          <rect x="1" y="2.5" width="32" height="19" rx="5.5" fill="url(#logoKeyGrad)"/>
+          <g fill="#ffffff" opacity="0.95">
+            <rect x="4.55" y="6.15" width="5.1" height="3.3" rx="1.3"/>
+            <rect x="11.15" y="6.15" width="5.1" height="3.3" rx="1.3"/>
+            <rect x="17.75" y="6.15" width="5.1" height="3.3" rx="1.3"/>
+            <rect x="24.35" y="6.15" width="5.1" height="3.3" rx="1.3"/>
+            <rect x="4.55" y="10.35" width="5.1" height="3.3" rx="1.3"/>
+            <rect x="11.15" y="10.35" width="5.1" height="3.3" rx="1.3"/>
+            <rect x="17.75" y="10.35" width="5.1" height="3.3" rx="1.3"/>
+            <rect x="24.35" y="10.35" width="5.1" height="3.3" rx="1.3"/>
+            <rect x="9.5" y="14.55" width="15" height="3.3" rx="1.3"/>
+          </g>
+        </svg>
+        <span class="logo-text">打字小英雄</span>
+      </div>
+      <span class="version-badge" id="appVersion" title="当前版本">v-</span>
+    </div>
+    <div id="topbarRight"></div>
+  </div>
+
+  <div class="page" id="page-auth">
+    <div class="auth-box">
+      <h1>🏠 欢迎回来</h1>
+      <div id="userList" class="user-list"></div>
+      <div class="auth-form">
+        <input id="authName" placeholder="你的名字" maxlength="8">
+        <input id="authPass" type="password" placeholder="密码（至少 4 位）">
+        <div class="auth-btns">
+          <button id="btnLogin" class="btn btn-primary">登录</button>
+          <button id="btnReg" class="btn btn-ghost">注册新用户</button>
+        </div>
+      </div>
+      <div class="auth-tip">每个小朋友都有自己的账号和成绩记录，<br>数据只存在这台电脑里，放心使用。</div>
+    </div>
+  </div>
+
+  <div class="page" id="page-home">
+    <div class="welcome" id="welcomeText"></div>
+    <div class="son-note" id="sonNote" hidden></div>
+    <div class="home-cards">
+      <button class="card" data-cat="en_word"><div class="card-emoji">🔤</div><div class="card-title">英文单词</div><div class="card-sub">拼出小单词</div></button>
+      <button class="card" data-cat="en_art"><div class="card-emoji">📖</div><div class="card-title">英文文章</div><div class="card-sub">打打小短文</div></button>
+      <button class="card" data-cat="cn_word"><div class="card-emoji">🀄</div><div class="card-title">好词积累</div><div class="card-sub">成语与学科词语</div></button>
+      <button class="card" data-cat="cn_art"><div class="card-emoji">📚</div><div class="card-title">校内美文</div><div class="card-sub">名篇与作文好句</div></button>
+      <button class="card" data-cat="py_code"><div class="card-emoji">🐍</div><div class="card-title">Python 代码</div><div class="card-sub">为 AI 学习打基础</div></button>
+    </div>
+    <div class="home-btns">
+      <button id="btnStats" class="btn btn-primary">📈 我的成绩</button>
+      <button id="btnHelp" class="btn btn-ghost">📖 游戏说明</button>
+      <button id="btnSwitch" class="btn btn-ghost">👥 切换用户</button>
+    </div>
+    <div class="mode-banners">
+      <button class="game-banner" id="btnGameMode">
+        <span class="gb-icon">🏸</span>
+        <span class="gb-txt"><b>羽毛球模式</b><i>打字就是击球</i></span>
+        <span class="gb-go">开始 →</span>
+      </button>
+      <button class="game-banner finger-banner" id="btnFingerMode">
+        <span class="gb-icon">🖐️</span>
+        <span class="gb-txt"><b>指法练习</b><i>手型对了，速度自然来</i></span>
+        <span class="gb-go">开始 →</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="page" id="page-help">
+    <h2>📖 游戏说明</h2>
+    <div class="help-box">
+      <div class="help-sec">
+        <div class="help-title">怎么玩</div>
+        <p class="help-p">选一个内容，再选难度，屏幕上会出现要打的内容。<b>照着打就行</b>，打对的部分会变绿，当前要按的字符会高亮。</p>
+        <p class="help-p">下面的键盘会<b>亮起下一个要按的键</b>。眼睛看内容，手指跟着高亮走，慢慢就不用看键盘了。打错了按退格删掉重打，不会扣分。</p>
+      </div>
+      <div class="help-sec">
+        <div class="help-title">五种内容</div>
+        <div class="hit-list">
+          <div class="hit-row"><b>🔤 英文单词</b><span>从短单词开始，练习字母和手指位置。</span></div>
+          <div class="hit-row"><b>📖 英文文章</b><span>打完整的小短文，练习连贯和耐力。</span></div>
+          <div class="hit-row"><b>🀄 好词积累</b><span>831 条成语，围绕品德、为人处事、修身律己、君子之道。</span></div>
+          <div class="hit-row"><b>📚 校内美文</b><span>作文好句、六年级名篇与初一衔接的古诗文。</span></div>
+          <div class="hit-row"><b>🐍 Python 代码</b><span>真实可运行的代码，为学 AI 打基础。</span></div>
+        </div>
+      </div>
+      <div class="help-sec">
+        <div class="help-title">指法练习</div>
+        <p class="help-p">首页的「🖐️ 指法练习」是专门练手型的模式。键盘会按<b>手指分区上色</b>，下面还有一双手告诉你这一下该用哪根手指，大写时会提醒你按住另一侧的小指 Shift。</p>
+        <p class="help-p">一共 6 关，从定位键开始，一步步到三排混合和大写：</p>
+        <div class="hit-list" id="helpFingerLevels"></div>
+        <p class="help-p">每局 20 串、每串 4-6 个键，打完自动结算。指法分由三项组成：<b>击键正确率 60 分</b>、<b>节奏稳定度 25 分</b>、<b>Shift 规范度 15 分</b>。称号从指尖学徒一路升到盲打高手。</p>
+        <p class="help-p">说明：浏览器拿不到「实际是哪根手指按的」，所以这里靠手指分区引导和你按键的稳定性来练。真正能准确判定的只有大写时的对侧 Shift。</p>
+      </div>
+      <div class="help-sec">
+        <div class="help-title">英文速度档位</div>
+        <p class="help-p">每局结束会按你的速度给一个档位。<b>档位越高，说明你打得越快。</b>看看现在在哪一档，下一档是什么。</p>
+        <div class="tier-table" id="helpTiersEn"></div>
+      </div>
+      <div class="help-sec">
+        <div class="help-title">中文速度档位</div>
+        <p class="help-p">中文按中文字符/分钟计算，档位从简单菜肴一路到高级食材。</p>
+        <div class="tier-table" id="helpTiersCn"></div>
+      </div>
+      <div class="help-sec">
+        <div class="help-title">小提示</div>
+        <p class="help-p">慢慢打准确，比打得快更重要。准确率上去了，速度自己就会跟着来。</p>
+      </div>
+    </div>
+    <button id="bhBack" class="btn btn-ghost">← 返回主页</button>
+  </div>
+
+  <div class="page" id="page-level">
+    <h2 id="levelTitle"></h2>
+    <div class="level-list" id="levelList"></div>
+    <button id="btnBackHome" class="btn btn-ghost">← 返回主页</button>
+  </div>
+
+  <div class="page" id="page-practice">
+    <div class="prac-head">
+      <button id="btnQuit" class="btn btn-ghost btn-sm">✕ 结束</button>
+      <div class="prac-title" id="pracTitle"></div>
+      <div class="prac-meters" id="pracMeters"></div>
+    </div>
+    <div class="prac-progress"><div class="prac-progress-bar" id="pracProgress"></div></div>
+    <div class="prac-text" id="pracText"></div>
+    <div class="prac-hint" id="pracHint"></div>
+    <div class="finger-coach" id="fingerCoach" hidden></div>
+    <input id="cnInput" class="cn-input" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <div class="kb" id="kb"></div>
+    <div class="kb-tip" id="kbTip">👀 看这里：亮起来的键就是要按的键</div>
+  </div>
+
+  <div class="page" id="page-result">
+    <div class="result-box">
+      <div class="result-tier-icon" id="resultTierIcon"></div>
+      <div class="result-tier-name" id="resultTierName"></div>
+      <div class="result-stars" id="resultStars"></div>
+      <h2 id="resultTitle"></h2>
+      <div class="result-stats" id="resultStats"></div>
+      <div class="finger-breakdown" id="fingerBreakdown" hidden></div>
+      <div class="result-next" id="resultNext"></div>
+      <div class="result-msg" id="resultMsg"></div>
+      <div class="result-btns">
+        <button id="btnAgain" class="btn btn-primary">🔁 再来一次</button>
+        <button id="btnHome" class="btn btn-ghost">🏠 回主页</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-stats">
+    <h2>📈 我的进步</h2>
+    <div class="stats-chips" id="statsChips"></div>
+    <div class="stats-cards" id="statsCards"></div>
+    <div class="chart-box" id="statsBoxEn">
+      <div class="chart-title"><span class="ct-dot" style="background:#5b6cff"></span>英文速度（字符/分钟，按天平均）</div>
+      <svg id="statsChartEn" viewBox="0 0 640 240" style="width:100%;display:block"></svg>
+    </div>
+    <div class="chart-box" id="statsBoxCn">
+      <div class="chart-title"><span class="ct-dot" style="background:#ff7aa2"></span>中文速度（字符/分钟，按天平均）</div>
+      <svg id="statsChartCn" viewBox="0 0 640 240" style="width:100%;display:block"></svg>
+    </div>
+    <div class="chart-box" id="statsBoxFinger" hidden>
+      <div class="chart-title"><span class="ct-dot" style="background:#e08b3c"></span>指法分（每次练习，越高越稳越准）</div>
+      <svg id="statsChartFinger" viewBox="0 0 640 240" style="width:100%;display:block"></svg>
+    </div>
+    <div class="detail-box">
+      <div class="detail-head">
+        <span class="detail-title">练习明细</span>
+        <select class="day-select" id="statsDay"></select>
+      </div>
+      <table class="detail-table">
+        <thead><tr><th>时间</th><th>模式</th><th>成绩</th><th>正确率</th></tr></thead>
+        <tbody id="statsDetail"></tbody>
+      </table>
+      <div class="detail-charts">
+        <div id="detailBoxEn"><div class="chart-title"><span class="ct-dot" style="background:#5b6cff"></span>当天英文速度（每次练习）</div>
+          <svg id="detailChartEn" viewBox="0 0 640 180" style="width:100%;display:block"></svg></div>
+        <div id="detailBoxCn"><div class="chart-title"><span class="ct-dot" style="background:#ff7aa2"></span>当天中文速度（每次练习）</div>
+          <svg id="detailChartCn" viewBox="0 0 640 180" style="width:100%;display:block"></svg></div>
+        <div id="detailBoxFinger" hidden><div class="chart-title"><span class="ct-dot" style="background:#e08b3c"></span>当天指法分（每次练习）</div>
+          <svg id="detailChartFinger" viewBox="0 0 640 180" style="width:100%;display:block"></svg></div>
+      </div>
+    </div>
+    <button id="btnBackHome2" class="btn btn-ghost">← 返回主页</button>
+  </div>
+
+  <div class="page" id="page-game-diff">
+    <h2>🏸 羽毛球 · 选择难度</h2>
+    <div class="level-list" id="gameDiffList"></div>
+    <div class="gd-btns">
+      <button id="gdHelp" class="btn btn-primary">📖 游戏说明</button>
+      <button id="gdBack" class="btn btn-ghost">← 返回主页</button>
+    </div>
+  </div>
+
+  <div class="page" id="page-game-help">
+    <h2>🏸 游戏说明</h2>
+    <div class="help-box">
+      <div class="help-sec">
+        <div class="help-title">怎么玩</div>
+        <p class="help-p">屏幕上方会飞来一个羽毛球，下面出现一个单词。<b>把单词一字不差地打完，就等于挥拍击球。</b>球不会等你，也不会有第二次机会——打完立刻击球，球就飞回去。</p>
+        <p class="help-p">球飞得越高被击中，说明你打得越快。所以<b>打得越快，越容易打出杀球</b>。漏球只是丢一分，不会结束游戏，继续打就好。</p>
+      </div>
+      <div class="help-sec">
+        <div class="help-title">四种击球</div>
+        <div class="hit-list">
+          <div class="hit-row"><b class="hit-smash">杀球 SMASH</b><span>用掉的时间不到一半，得 2 分，球会狠狠砸下去。</span></div>
+          <div class="hit-row"><b class="hit-drive">平抽 DRIVE</b><span>正常速度打完，得 1 分，球又快又平。</span></div>
+          <div class="hit-row"><b class="hit-lift">挑高 LIFT</b><span>时间快用完才打完，得 1 分，球勉强挑高。</span></div>
+          <div class="hit-row"><b class="hit-miss">漏球 MISS</b><span>球落地了。丢一分，连击归零，但游戏继续。</span></div>
+        </div>
+      </div>
+      <div class="help-sec">
+        <div class="help-title">难度与时长</div>
+        <div class="diff-help" id="helpDiff"></div>
+      </div>
+      <div class="help-sec">
+        <div class="help-title">你的速度档位</div>
+        <p class="help-p">每一局结束，系统会按你的速度给出一个档位。档位越高，说明你打得越快。</p>
+        <div class="tier-table" id="helpTiers"></div>
+      </div>
+      <div class="help-sec">
+        <div class="help-title">小提示</div>
+        <p class="help-p">下面亮起来的键，就是下一个要按的键。眼睛看单词，手指跟着高亮走，慢慢就不需要看键盘了。</p>
+      </div>
+    </div>
+    <button id="ghBack" class="btn btn-ghost">← 返回难度选择</button>
+  </div>
+
+  <div class="page" id="page-game">
+    <div class="game-wrap">
+      <div class="game-head">
+        <button id="gQuit" class="btn btn-ghost btn-sm">✕ 结束</button>
+        <div class="game-hud">
+          <span class="gh-me"><i id="gName">我</i> <b id="gScoreMe">0</b></span>
+          <span class="gh-time" id="gTime">120</span>
+          <span class="gh-op"><b id="gScoreOp">0</b> 教练</span>
+        </div>
+        <div class="gh-combo" id="gCombo"></div>
+      </div>
+      <div class="game-diff-tag" id="gDiffTag"></div>
+      <div class="game-stage">
+        <canvas id="gameCanvas" width="320" height="180"></canvas>
+        <div class="game-toast" id="gToast"></div>
+      </div>
+      <div class="game-word" id="gameWord"></div>
+      <div class="kb" id="gameKb"></div>
+      <div class="kb-tip" id="gTip">👀 打完整个单词就会击球，越快越可能打出杀球</div>
+      <div class="game-nokb" id="gNoKb" hidden>🏸 游戏模式需要实体键盘，请用电脑打开</div>
+    </div>
+  </div>
+
+  <div class="page" id="page-game-result">
+    <div class="result-box">
+      <div class="result-tier-icon" id="grTierIcon"></div>
+      <div class="result-tier-name" id="grTierName"></div>
+      <div class="result-stars" id="grStars"></div>
+      <h2>训练结束</h2>
+      <div class="result-stats" id="grStats"></div>
+      <div class="result-next" id="grNext"></div>
+      <div class="result-msg" id="grMsg"></div>
+      <div class="result-btns">
+        <button id="grAgain" class="btn btn-primary">🔁 再来一局</button>
+        <button id="grHome" class="btn btn-ghost">🏠 回主页</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+'use strict';
+/* ================= 版本 =================
+   版本号的唯一来源是 <head> 中的 #app-meta JSON。
+   修改功能后只改那一处，页头徽标与 window.TYPINGHERO_META 会自动同步。
+   其他 harness 可读取：
+     1) 原始 HTML：#app-meta 的 JSON 文本
+     2) 浏览器运行时：window.TYPINGHERO_META */
+const APP_META=JSON.parse(document.getElementById('app-meta').textContent);
+const APP_VERSION=APP_META.version;
+function initVersionBadge(){
+  const el=document.getElementById('appVersion');
+  if(el){
+    el.textContent='v'+APP_VERSION;
+    el.dataset.version=APP_VERSION;
+    el.title='当前版本 v'+APP_VERSION+'（更新于 '+APP_META.updatedAt+'）';
+  }
+  document.title=APP_META.name+' v'+APP_VERSION+' - 快乐打字练习';
+}
+window.TYPINGHERO_META=Object.freeze({
+  schemaVersion:APP_META.schemaVersion,
+  app:APP_META.app,
+  name:APP_META.name,
+  version:APP_VERSION,
+  updatedAt:APP_META.updatedAt,
+  versionPolicy:APP_META.versionPolicy,
+  history:APP_META.history
+});
+/* ================= 常量 ================= */
+const LS_DB='typekid_db_v1', LS_HIST='typekid_hist_v1', LS_CUR='typekid_cur_v1';
+const CATS={
+  en_word:{name:'英文单词',emoji:'🔤'},
+  en_art:{name:'英文文章',emoji:'📖'},
+  cn_word:{name:'好词积累',emoji:'🀄'},
+  cn_art:{name:'校内美文',emoji:'📚'},
+  py_code:{name:'Python 代码',emoji:'🐍'},
+  finger:{name:'指法练习',emoji:'🖐️'}
+};
+const CAT_ORDER=['en_word','en_art','cn_word','cn_art','py_code','finger'];
+const EMOJIS=['🐱','🐶','🐼','🦊','🐰','🐯','🦁','🐸','🐨','🦄','🐹','🦉'];
+const COLORS=['#5b6cff','#ff7aa2','#ff9f43','#10ac84','#5f27cd','#0abde3','#ee5253','#e84393'];
+const PRAISE=['太棒了！','真厉害！','继续加油！','好厉害呀！','你是打字小英雄！','哇，进步好大！','完美！','帅呆了！','越来越快了！','做得真好！'];
+/* 速度档位：英文从草履虫逐步过渡到交通工具，中文从简单菜肴过渡到高级食材。
+   每档配一个图标，结果页会用大图标显示当前档位。
+   英文前段（0-150）细分为 10 档、每档 15，方便刚起步时更密集地看到进步；
+   后段（150-300）保持 5 档、每档 30。 */
+const EN_SPEED_FEEDBACK=[
+  {max:15,text:'你像一只草履虫，虽然很小，但已经开始向前移动了。'},
+  {max:30,text:'你像一只蜗牛，一步一步建立自己的节奏。'},
+  {max:45,text:'你像一只小乌龟，稳稳地往前走。'},
+  {max:60,text:'你像一只小蚂蚁，小小的身体很有力气。'},
+  {max:75,text:'你像一只小兔子，开始轻快前进。'},
+  {max:90,text:'你像一只小松鼠，动作越来越灵活。'},
+  {max:105,text:'你像一只小鹿，动作灵活又专注。'},
+  {max:120,text:'你像一匹小马，已经能稳稳地跑起来。'},
+  {max:135,text:'你像一只羚羊，轻快地向前奔跑。'},
+  {max:150,text:'你像一只猎豹，反应正在变快。'},
+  {max:180,text:'你像一辆摩托车，加速干脆又灵活。'},
+  {max:210,text:'你像一辆赛车，反应越来越快。'},
+  {max:240,text:'你像一列高铁，速度十足地向前冲。'},
+  {max:270,text:'你像一架飞机，已经离开地面高速前进。'},
+  {max:300,text:'你像一枚火箭，直接冲向更高的地方。'}
+];
+const CN_SPEED_FEEDBACK=[
+  {max:10,text:'像一碗白粥，简单但温暖。'},
+  {max:20,text:'像一碟小菜，清爽又有进步。'},
+  {max:30,text:'像一碗蛋炒饭，基础越来越扎实。'},
+  {max:40,text:'像一盘饺子，节奏饱满又顺手。'},
+  {max:50,text:'像一碗面条，越打越顺。'},
+  {max:60,text:'像一锅老火汤，慢慢熬出真功夫。'},
+  {max:70,text:'像一盘咖喱饭，味道越来越丰富。'},
+  {max:80,text:'像一盘烤肉，火候掌握得越来越好。'},
+  {max:90,text:'像一份海鲜饭，配料越来越讲究。'},
+  {max:100,text:'像一份精致寿司，细节处理很漂亮。'},
+  {max:110,text:'像一只龙虾，已经是很讲究的水平。'},
+  {max:120,text:'像一只帝王蟹，稀有又让人惊叹。'},
+  {max:130,text:'像一块优质松露，稀有又有水平。'},
+  {max:140,text:'像一份顶级鱼子酱，节奏细腻高级。'},
+  {max:150,text:'像一块珍贵和牛，速度与质量俱佳。'}
+];
+const EN_SPEED_LABELS=['草履虫','蜗牛','小乌龟','小蚂蚁','小兔子','小松鼠','小鹿','小马','羚羊','猎豹','摩托车','赛车','高铁','飞机','火箭'];
+const CN_SPEED_LABELS=['白粥','小菜','蛋炒饭','饺子','面条','老火汤','咖喱饭','烤肉','海鲜饭','寿司','龙虾','帝王蟹','松露','鱼子酱','和牛'];
+const EN_SPEED_ICONS=['🦠','🐌','🐢','🐜','🐰','🐿️','🦌','🐎','🐏','🐆','🏍️','🏎️','🚄','✈️','🚀'];
+const CN_SPEED_ICONS=['🥣','🥬','🍚','🥟','🍜','🍲','🍛','🍖','🍤','🍣','🦞','🦀','🍄','🐟','🥩'];
+/* 隐藏彩蛋：速度突破常规档位上限后触发的特殊档位。
+   英文 450 字符/分 → 三体的水滴；中文 200 字符/分 → 满汉全席。 */
+const EASTER_EGGS={
+  en:{speed:450,icon:'💧',name:'水滴',
+      title:'外星科技，不该来地球虐菜',
+      text:'这是《三体》里的水滴。用外星科技来对付地球人，属实有点欺负人了。'},
+  cn:{speed:200,icon:'🍱',name:'满汉全席',
+      title:'别人是做了一道菜，您直接摆了一桌',
+      text:'这个水平，已经不建议参赛了——容易吓到其他选手。'}
+};
+function easterEggFor(speed,isEnglish){
+  const egg=isEnglish?EASTER_EGGS.en:EASTER_EGGS.cn;
+  return speed>=egg.speed?egg:null;
+}
+/* 当前速度落在第几档（0 起） */
+function speedTierIndex(speed,isEnglish){
+  const levels=isEnglish?EN_SPEED_FEEDBACK:CN_SPEED_FEEDBACK;
+  const i=levels.findIndex(item=>speed<=item.max);
+  return i<0?levels.length-1:i;
+}
+function speedTierIcon(speed,isEnglish){
+  const icons=isEnglish?EN_SPEED_ICONS:CN_SPEED_ICONS;
+  return icons[speedTierIndex(speed,isEnglish)];
+}
+function speedTierLabel(speed,isEnglish){
+  const labels=isEnglish?EN_SPEED_LABELS:CN_SPEED_LABELS;
+  return labels[speedTierIndex(speed,isEnglish)];
+}
+function speedFeedback(speed,isEnglish){
+  const levels=isEnglish?EN_SPEED_FEEDBACK:CN_SPEED_FEEDBACK;
+  return (levels.find(item=>speed<=item.max)||levels[levels.length-1]).text;
+}
+function nextSpeedLabel(speed,isEnglish){
+  const levels=isEnglish?EN_SPEED_FEEDBACK:CN_SPEED_FEEDBACK;
+  const labels=isEnglish?EN_SPEED_LABELS:CN_SPEED_LABELS;
+  const index=levels.findIndex(item=>speed<=item.max);
+  return index<0||index===labels.length-1?'登峰造极，炉火纯青':'下一档：'+labels[index+1];
+}
+const LEVELS=[
+  {n:1,t:'简单',d:'先练练手，慢慢来',s:'⭐'},
+  {n:2,t:'普通',d:'比一比，谁更快',s:'⭐⭐'},
+  {n:3,t:'进阶',d:'有点难，挑战一下',s:'⭐⭐⭐'},
+  {n:4,t:'挑战',d:'小小打字高手',s:'⭐⭐⭐⭐'}
+];
+const PY_LEVELS=[
+  {n:1,t:'变量与输出',d:'print、字符串、数字、布尔值',s:'⭐'},
+  {n:2,t:'条件与循环',d:'if、for、while、列表',s:'⭐⭐'},
+  {n:3,t:'函数与数据',d:'def、字典、列表推导式',s:'⭐⭐⭐'},
+  {n:4,t:'AI 代码基础',d:'JSON、prompt、messages、tools',s:'⭐⭐⭐⭐'}
+];
+/* 好词积累：成语主题，按品德与为人处事递进 */
+const CN_WORD_LEVELS=[
+  {n:1,t:'品德基础',d:'尊敬师长、遵守纪律、勤学守规',s:'⭐'},
+  {n:2,t:'为人处事',d:'待人以诚、与人为善、处事有方',s:'⭐⭐'},
+  {n:3,t:'修身律己',d:'自省自律、担当责任、坚韧不拔',s:'⭐⭐⭐'},
+  {n:4,t:'君子之道',d:'家国情怀、温良恭俭、志向高远',s:'⭐⭐⭐⭐'}
+];
+/* 校内美文：文章主题，与成语分开，避免表意混淆 */
+const CN_LEVELS=[
+  {n:1,t:'基础积累',d:'学习习惯、校园表达、常用好句',s:'⭐'},
+  {n:2,t:'观察与表达',d:'科学观察、清楚表达、写清细节',s:'⭐⭐'},
+  {n:3,t:'作文与名篇',d:'作文好句、六年级名篇积累',s:'⭐⭐⭐'},
+  {n:4,t:'初一衔接',d:'现代名篇、古诗文与文言表达',s:'⭐⭐⭐⭐'}
+];
+/* ================= 指法练习 =================
+   浏览器拿不到「哪根手指真的按下去」，所以这里不做手指判定，
+   而是用「手指分区引导 + 可测的代理指标」来练指法：
+   击键正确率（主力）、节奏稳定度、以及唯一能硬检测的对侧 Shift。 */
+const FINGER_LEVELS=[
+  {n:1,t:'中排定位',d:'a s d f j k l ;　食指摸准 F 和 J 的凸点',s:'⭐',chars:'asdfjkl;'},
+  {n:2,t:'中排扩展',d:'加入 g 和 h，食指向中间伸一格',s:'⭐⭐',chars:'asdfghjkl;'},
+  {n:3,t:'上排伸直',d:'q w e r t y u i o p，从定位键向上伸',s:'⭐',chars:'qwertyuiop'},
+  {n:4,t:'下排下探',d:'z x c v b n m , . /，从定位键向下弯',s:'⭐',chars:'zxcvbnm,./'},
+  {n:5,t:'三排混合',d:'上中下三排轮换，每打完一个都回定位键',s:'⭐⭐⭐',chars:'asdfghjkl;qwertyuiopzxcvbnm,./'},
+  {n:6,t:'大写与 Shift',d:'大写字母用另一只手的小指按住 Shift',s:'⭐⭐⭐',chars:'asdfghjklqwertyuiopzxcvbnm',upper:true}
+];
+/* 手指代码：L/R 左右，P 小指、R 无名指、M 中指、I 食指、T 拇指 */
+const FINGER_META={
+  LP:{name:'左手小指',color:'#e8578f',bg:'#ffe4ef',x:26,y:28,h:40},
+  LR:{name:'左手无名指',color:'#e08b3c',bg:'#ffeeda',x:48,y:14,h:54},
+  LM:{name:'左手中指',color:'#c9a300',bg:'#fff7d6',x:70,y:6,h:62},
+  LI:{name:'左手食指',color:'#2f9e78',bg:'#dff6ee',x:92,y:14,h:54},
+  LT:{name:'左手拇指',color:'#3d8fd1',bg:'#e0f0fc',x:116,y:40,h:30},
+  RT:{name:'右手拇指',color:'#3d8fd1',bg:'#e0f0fc',x:186,y:40,h:30},
+  RI:{name:'右手食指',color:'#2f9e78',bg:'#dff6ee',x:210,y:14,h:54},
+  RM:{name:'右手中指',color:'#c9a300',bg:'#fff7d6',x:232,y:6,h:62},
+  RR:{name:'右手无名指',color:'#e08b3c',bg:'#ffeeda',x:254,y:14,h:54},
+  RP:{name:'右手小指',color:'#e8578f',bg:'#ffe4ef',x:276,y:28,h:40}
+};
+/* 字符 → 负责它的手指（用标准指法分区） */
+const FINGER_OF_CHAR={
+  q:'LP',a:'LP',z:'LP',1:'LP',  w:'LR',s:'LR',x:'LR',2:'LR',
+  e:'LM',d:'LM',c:'LM',3:'LM',
+  r:'LI',f:'LI',v:'LI',t:'LI',g:'LI',b:'LI',4:'LI',5:'LI',
+  y:'RI',h:'RI',n:'RI',u:'RI',j:'RI',m:'RI',6:'RI',7:'RI',
+  i:'RM',k:'RM',',':'RM',8:'RM',
+  o:'RR',l:'RR','.':'RR',9:'RR',
+  p:'RP',';':'RP','/':'RP',0:'RP','-':'RP','=':'RP','[':'RP',']':'RP','\\':'RP',"'":'RP','`':'LP'
+};
+const FINGER_TITLES=[
+  {min:92,icon:'🏆',name:'盲打高手'},
+  {min:82,icon:'🥇',name:'指法小师傅'},
+  {min:65,icon:'🥈',name:'指法小徒弟'},
+  {min:0, icon:'🌱',name:'指尖学徒'}
+];
+const FINGER_CHEERS=['节奏很稳，保持住！','手指越来越听话了！','定位键记得很牢！','就是这样，稳稳地来！','每一下都到位，很好！'];
+function fingerTitle(score){return FINGER_TITLES.find(t=>score>=t.min)||FINGER_TITLES[FINGER_TITLES.length-1]}
+/* 目标字符要用哪几根手指 / 哪一侧 Shift */
+function fingersForChar(ch){
+  if(!ch)return {codes:[],shiftSide:null,letterCode:null,upper:false,space:false};
+  if(ch===' ')return {codes:['LT','RT'],shiftSide:null,letterCode:null,upper:false,space:true};
+  const upper=/[A-Z]/.test(ch);
+  const code=FINGER_OF_CHAR[ch.toLowerCase()];
+  if(!code)return {codes:[],shiftSide:null,letterCode:null,upper:false};
+  if(!upper)return {codes:[code],shiftSide:null,letterCode:code,upper:false,space:false};
+  /* 大写：用另一只手的小指按住 Shift（左手字母→右 Shift，右手字母→左 Shift） */
+  const shiftSide=code[0]==='L'?'right':'left';
+  const shiftCode=shiftSide==='left'?'LP':'RP';
+  return {codes:[shiftCode,code],shiftSide,shiftCode,letterCode:code,upper:true,space:false};
+}
+/* ================= 存储 ================= */
+function load(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
+let DB=load(LS_DB,{users:{}});
+let HIST=load(LS_HIST,{});
+let CUR=localStorage.getItem(LS_CUR)||'';
+function enc(s){try{return btoa(unescape(encodeURIComponent(s)))}catch(e){return s}}
+function dec(s){try{return decodeURIComponent(escape(atob(s)))}catch(e){return s}}
+function curUser(){return DB.users[CUR]||null}
+/* ================= DOM 工具 ================= */
+const $=s=>document.querySelector(s);
+const $$=s=>document.querySelectorAll(s);
+function showPage(id){
+  $$('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+let toastTimer=null;
+function toast(msg){
+  let t=$('#toast');
+  if(!t){t=document.createElement('div');t.id='toast';t.className='toast';document.body.appendChild(t)}
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),1800);
+}
+function hashColor(name){let h=0;for(const c of name)h=(h*31+c.charCodeAt(0))>>>0;return COLORS[h%COLORS.length]}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function rand(n){return Math.floor(Math.random()*n)}
+function shuffle(a){const r=a.slice();for(let i=r.length-1;i>0;i--){const j=rand(i+1);[r[i],r[j]]=[r[j],r[i]]}return r}
+/* ================= 账号 ================= */
+function refreshTopbar(){
+  const u=curUser();
+  $('#topbarRight').innerHTML=u
+    ? '<span class="topbar-user"><span class="avatar" style="background:'+(u.color||hashColor(CUR))+'">'+(u.emoji||'⌨')+'</span>'+esc(CUR)+'</span>'
+    : '';
+}
+function refreshUserList(){
+  const box=$('#userList');
+  const names=Object.keys(DB.users);
+  if(!names.length){box.innerHTML='<div class="auth-tip">还没有用户，先注册一个吧！👇</div>';return}
+  box.innerHTML=names.map(n=>{
+    const u=DB.users[n];
+    return '<div class="user-tile" data-name="'+esc(n)+'"><div class="av" style="background:'+u.color+'">'+u.emoji+'</div><div class="nm">'+esc(n)+'</div></div>';
+  }).join('');
+  $$('#userList .user-tile').forEach(t=>{
+    t.onclick=()=>{ $('#authName').value=t.dataset.name; $('#authPass').value=''; $('#authPass').focus(); };
+  });
+}
+function doLogin(){
+  const name=$('#authName').value.trim();
+  const pass=$('#authPass').value;
+  if(!name){toast('请输入名字');return}
+  const u=DB.users[name];
+  if(!u){toast('这个用户不存在，试试注册吧');return}
+  if(dec(u.pass)!==pass){toast('密码不对哦，再想想');return}
+  CUR=name;localStorage.setItem(LS_CUR,CUR);
+  toast('欢迎回来，'+name+'！');
+  enterHome();
+}
+function doReg(){
+  const name=$('#authName').value.trim();
+  const pass=$('#authPass').value;
+  if(!name){toast('先输入名字');return}
+  if(name.length>8){toast('名字要 8 个字以内');return}
+  if(pass.length<4){toast('密码至少 4 位');return}
+  if(DB.users[name]){toast('这个名字已经被用啦');return}
+  DB.users[name]={pass:enc(pass),emoji:EMOJIS[Object.keys(DB.users).length%EMOJIS.length],color:hashColor(name),created:Date.now()};
+  save(LS_DB,DB);
+  CUR=name;localStorage.setItem(LS_CUR,CUR);
+  $('#authPass').value='';
+  toast('注册成功，欢迎你！🎉');
+  enterHome();
+}
+/* 家长寄语（可选）：登录后首页随机显示一条。
+   把 child 改成孩子的登录名、在 notes 里写想说的话即可开启；留空则完全不显示。 */
+const FAMILY_NOTE={
+  child:'',
+  notes:[
+    '慢一点没关系，今天比昨天多按对几个键，就是在往前走。',
+    '打错了按退格重来就好，错了就改，改了就继续。',
+    '速度是练出来的，不是急出来的。'
+  ]
+};
+function renderSonNote(){
+  const box=$('#sonNote');
+  if(!box)return;
+  if(!FAMILY_NOTE.child||CUR!==FAMILY_NOTE.child||!FAMILY_NOTE.notes.length){box.hidden=true;box.textContent='';return}
+  box.hidden=false;
+  box.textContent=FAMILY_NOTE.notes[rand(FAMILY_NOTE.notes.length)];
+}
+function enterHome(){
+  refreshTopbar();
+  $('#welcomeText').innerHTML='嗨，<b>'+esc(CUR)+'</b>！今天想练什么？✌️';
+  renderSonNote();
+  showPage('page-home');
+}
+function backToAuth(){
+  CUR='';localStorage.removeItem(LS_CUR);
+  $('#authPass').value='';$('#authName').value='';
+  refreshUserList();refreshTopbar();showPage('page-auth');
+}
+/* ================= 素材库：英文 ================= */
+const MAT={
+en_word:{
+1:['cat','dog','sun','red','big','hat','bus','pig','boy','girl','day','fun','run','jump','book','pen','bag','cup','bed','map','star','tree','fish','bird','rain','snow','milk','egg','hand','foot','head','eye'],
+2:['apple','water','school','friend','animal','house','happy','small','green','orange','yellow','purple','teacher','student','pencil','ruler','color','music','dance','family','morning','evening','basket','garden'],
+3:['breakfast','dinner','beautiful','important','interesting','yesterday','tomorrow','favorite','weather','mountain','river','forest','library','hospital','country','village','elephant','umbrella','different','question','answer','science','history','holiday'],
+4:['adventure','remember','together','everyone','computer','sometimes','surprise','wonderful','exercise','grandparent','vegetable','strawberry','dinosaur','volcano','treasure','journey','champion','curious','delicious','popular']
+},
+en_art:{
+1:{
+titles:['My Cat','Sunny Morning','Rainy Day'],
+texts:[
+'I have a cat. My cat is white. She likes fish. She can jump high. I love my cat.',
+'The sun is up. The birds sing. I go to school. I have a new bag. My bag is blue. I am happy.',
+'It is raining. I play at home. I read a book. My dog sleeps. I am happy at home.'
+]},
+2:{
+titles:['My School Life','A Day in the Park','Winter Fun'],
+texts:[
+'My name is Tom. I am eleven years old. I go to school from Monday to Friday. My favorite subject is science. I like plants and animals. After school, I play basketball with my friends. We have a lot of fun.',
+'Last weekend, my family went to the park. The weather was nice. We had a picnic under a big tree. My father flew a kite. My mother read a book. My sister and I played with a ball. We all had a wonderful day.',
+'Winter is coming. The days are short and the nights are long. Sometimes it snows. The ground is white. Children like to make snowmen and throw snowballs. They wear warm coats and gloves. Winter is cold, but it is beautiful.'
+]},
+3:{
+titles:['Good Friends','My Dream','Computers in Our Life'],
+texts:[
+'Everyone needs friends. A good friend is kind and helpful. When you are sad, your friend can make you happy. When you have problems, your friend can help you. But making friends is not easy. You must be a good friend too. You should listen to your friends. You should share your toys and ideas. Remember, a friend in need is a friend indeed.',
+'My dream is to travel around the world. I want to see the Great Wall in China. I want to visit the pyramids in Egypt. I want to watch the sunrise on the beach in Australia. Traveling is not only fun, but also a good way to learn. You can meet new people and try new food. You can learn about different cultures. I will study hard and save money. I believe my dream will come true one day.',
+'Computers are very important in our life. We use them to study, to work, and to play. With a computer, we can search for information on the Internet. We can send emails to our friends. We can play games and watch movies. But we must not spend too much time on the computer. It is bad for our eyes. We should also play outside and do sports. Balance is the key to a healthy life.'
+ ]},
+4:{
+ titles:['A Small Invention','Learning to Build','A Brave Question'],
+ texts:[
+ 'I like making useful things. First, I ask a clear question. Then I find information, write a small plan, and test one idea at a time. When something fails, I look carefully and try again. Every mistake can teach me something new.',
+ 'Python helps me turn ideas into steps. I can store words in a list, make decisions with if, and repeat a task with a loop. When the task becomes bigger, I can put the work in a function. Small programs can grow into useful tools.',
+ 'A good learner is not afraid of a difficult question. I can read the problem, explain what I know, and ask for help when I need it. Careful thinking is more important than rushing. Step by step, I can solve harder problems.'
+ ]}
+}
+};
+/* ================= 素材库：中文成语（好词积累） =================
+   四级主题：品德基础 / 为人处事 / 修身律己 / 君子之道
+   每级均不少于 200 条四字成语，全部标注逐字拼音。 */
+MAT.cn_word={
+1:[
+['尊师重道','zun shi zhong dao'],['尊老爱幼','zun lao ai you'],['敬老尊贤','jing lao zun xian'],['温良恭俭','wen liang gong jian'],
+['谦虚谨慎','qian xu jin shen'],['诚实守信','cheng shi shou xin'],['言行一致','yan xing yi zhi'],['表里如一','biao li ru yi'],
+['言而有信','yan er you xin'],['一言九鼎','yi yan jiu ding'],['光明磊落','guang ming lei luo'],['堂堂正正','tang tang zheng zheng'],
+['正直无私','zheng zhi wu si'],['大公无私','da gong wu si'],['舍己为人','she ji wei ren'],['助人为乐','zhu ren wei le'],
+['乐于助人','le yu zhu ren'],['扶危济困','fu wei ji kun'],['雪中送炭','xue zhong song tan'],['见义勇为','jian yi yong wei'],
+['挺身而出','ting shen er chu'],['拾金不昧','shi jin bu mei'],['无私奉献','wu si feng xian'],['默默无闻','mo mo wu wen'],
+['任劳任怨','ren lao ren yuan'],['吃苦耐劳','chi ku nai lao'],['埋头苦干','mai tou ku gan'],['脚踏实地','jiao ta shi di'],
+['兢兢业业','jing jing ye ye'],['勤勤恳恳','qin qin ken ken'],['一丝不苟','yi si bu gou'],['精益求精','jing yi qiu jing'],
+['认真负责','ren zhen fu ze'],['尽职尽责','jin zhi jin ze'],['尽心尽力','jin xin jin li'],['全心全意','quan xin quan yi'],
+['全力以赴','quan li yi fu'],['竭尽全力','jie jin quan li'],['不遗余力','bu yi yu li'],['严于律己','yan yu lv ji'],
+['宽以待人','kuan yi dai ren'],['自强不息','zi qiang bu xi'],['奋发图强','fen fa tu qiang'],['力争上游','li zheng shang you'],
+['积极向上','ji ji xiang shang'],['朝气蓬勃','zhao qi peng bo'],['斗志昂扬','dou zhi ang yang'],['意气风发','yi qi feng fa'],
+['风华正茂','feng hua zheng mao'],['生龙活虎','sheng long huo hu'],['龙马精神','long ma jing shen'],['神采奕奕','shen cai yi yi'],
+['容光焕发','rong guang huan fa'],['兴致勃勃','xing zhi bo bo'],['兴高采烈','xing gao cai lie'],['喜气洋洋','xi qi yang yang'],
+['心情舒畅','xin qing shu chang'],['心旷神怡','xin kuang shen yi'],['悠然自得','you ran zi de'],['自得其乐','zi de qi le'],
+['知足常乐','zhi zu chang le'],['安贫乐道','an pin le dao'],['淡泊名利','dan bo ming li'],['清心寡欲','qing xin gua yu'],
+['洁身自好','jie shen zi hao'],['一尘不染','yi chen bu ran'],['两袖清风','liang xiu qing feng'],['光明正大','guang ming zheng da'],
+['循规蹈矩','xun gui dao ju'],['遵纪守法','zun ji shou fa'],['令行禁止','ling xing jin zhi'],['秋毫无犯','qiu hao wu fan'],
+['安分守己','an fen shou ji'],['奉公守法','feng gong shou fa'],['克己奉公','ke ji feng gong'],['恪守不渝','ke shou bu yu'],
+['谨言慎行','jin yan shen xing'],['不耻下问','bu chi xia wen'],['虚心求教','xu xin qiu jiao'],['勤学好问','qin xue hao wen'],
+['学而不厌','xue er bu yan'],['温故知新','wen gu zhi xin'],['学无止境','xue wu zhi jing'],['持之以恒','chi zhi yi heng'],
+['坚持不懈','jian chi bu xie'],['锲而不舍','qie er bu she'],['水滴石穿','shui di shi chuan'],['铁杵成针','tie chu cheng zhen'],
+['磨杵成针','mo chu cheng zhen'],['日积月累','ri ji yue lei'],['积少成多','ji shao cheng duo'],['聚沙成塔','ju sha cheng ta'],
+['集腋成裘','ji ye cheng qiu'],['循序渐进','xun xu jian jin'],['由浅入深','you qian ru shen'],['刻苦钻研','ke ku zuan yan'],
+['专心致志','zhuan xin zhi zhi'],['聚精会神','ju jing hui shen'],['全神贯注','quan shen guan zhu'],['一心一意','yi xin yi yi'],
+['心无旁骛','xin wu pang wu'],['废寝忘食','fei qin wang shi'],['夜以继日','ye yi ji ri'],['争分夺秒','zheng fen duo miao'],
+['只争朝夕','zhi zheng zhao xi'],['闻鸡起舞','wen ji qi wu'],['悬梁刺股','xuan liang ci gu'],['凿壁偷光','zao bi tou guang'],
+['囊萤映雪','nang ying ying xue'],['手不释卷','shou bu shi juan'],['博览群书','bo lan qun shu'],['学富五车','xue fu wu che'],
+['满腹经纶','man fu jing lun'],['才华横溢','cai hua heng yi'],['出类拔萃','chu lei ba cui'],['名列前茅','ming lie qian mao'],
+['青出于蓝','qing chu yu lan'],['后来居上','hou lai ju shang'],['再接再厉','zai jie zai li'],['更上一层','geng shang yi ceng'],
+['不骄不躁','bu jiao bu zao'],['戒骄戒躁','jie jiao jie zao'],['虚怀若谷','xu huai ruo gu'],['从善如流','cong shan ru liu'],
+['见贤思齐','jian xian si qi'],['取长补短','qu chang bu duan'],['扬长避短','yang chang bi duan'],['去粗取精','qu cu qu jing'],
+['博采众长','bo cai zhong chang'],['兼收并蓄','jian shou bing xu'],['融会贯通','rong hui guan tong'],['举一反三','ju yi fan san'],
+['触类旁通','chu lei pang tong'],['勤能补拙','qin neng bu zhuo'],['笨鸟先飞','ben niao xian fei'],['熟能生巧','shu neng sheng qiao'],
+['水到渠成','shui dao qu cheng'],['瓜熟蒂落','gua shu di luo'],['顺理成章','shun li cheng zhang'],['理所当然','li suo dang ran'],
+['心领神会','xin ling shen hui'],['豁然开朗','huo ran kai lang'],['恍然大悟','huang ran da wu'],['茅塞顿开','mao se dun kai'],
+['深思熟虑','shen si shu lv'],['三思而行','san si er xing'],['谨小慎微','jin xiao shen wei'],['知难而进','zhi nan er jin'],
+['迎难而上','ying nan er shang'],['勇往直前','yong wang zhi qian'],['勇挑重担','yong tiao zhong dan'],['敢于担当','gan yu dan dang'],
+['坚韧不拔','jian ren bu ba'],['百折不挠','bai zhe bu nao'],['不屈不挠','bu qu bu nao'],['始终如一','shi zhong ru yi'],
+['善始善终','shan shi shan zhong'],['有始有终','you shi you zhong'],['一如既往','yi ru ji wang'],['不甘落后','bu gan luo hou'],
+['奋起直追','fen qi zhi zhui'],['临危不惧','lin wei bu ju'],['大义凛然','da yi lin ran'],['坚强不屈','jian qiang bu qu'],
+['刚正不阿','gang zheng bu e'],['铁面无私','tie mian wu si'],['公私分明','gong si fen ming'],['一视同仁','yi shi tong ren'],
+['平等待人','ping deng dai ren'],['以礼相待','yi li xiang dai'],['彬彬有礼','bin bin you li'],['文质彬彬','wen zhi bin bin'],
+['和蔼可亲','he ai ke qin'],['平易近人','ping yi jin ren'],['推心置腹','tui xin zhi fu'],['以诚相待','yi cheng xiang dai'],
+['将心比心','jiang xin bi xin'],['设身处地','she shen chu di'],['体贴入微','ti tie ru wei'],['无微不至','wu wei bu zhi'],
+['关怀备至','guan huai bei zhi'],['嘘寒问暖','xu han wen nuan'],['扶老携幼','fu lao xie you'],['排忧解难','pai you jie nan'],
+['与人为善','yu ren wei shan'],['和睦相处','he mu xiang chu'],['团结友爱','tuan jie you ai'],['同心协力','tong xin xie li'],
+['齐心协力','qi xin xie li'],['众志成城','zhong zhi cheng cheng'],['同舟共济','tong zhou gong ji'],['守望相助','shou wang xiang zhu'],
+['互帮互助','hu bang hu zhu'],['风雨同舟','feng yu tong zhou'],['患难与共','huan nan yu gong'],['荣辱与共','rong ru yu gong'],
+['同甘共苦','tong gan gong ku'],['亲密无间','qin mi wu jian'],['情同手足','qing tong shou zu'],['亲如一家','qin ru yi jia'],
+['尊重他人','zun zhong ta ren'],['礼貌待人','li mao dai ren'],['讲究礼貌','jiang jiu li mao'],['文明有礼','wen ming you li']
+],
+2:[
+['以德服人','yi de fu ren'],['以理服人','yi li fu ren'],['晓之以理','xiao zhi yi li'],['动之以情','dong zhi yi qing'],
+['循循善诱','xun xun shan you'],['谆谆教导','zhun zhun jiao dao'],['诲人不倦','hui ren bu juan'],['教学相长','jiao xue xiang zhang'],
+['因材施教','yin cai shi jiao'],['有教无类','you jiao wu lei'],['言传身教','yan chuan shen jiao'],['以身作则','yi shen zuo ze'],
+['为人师表','wei ren shi biao'],['德才兼备','de cai jian bei'],['品学兼优','pin xue jian you'],['德高望重','de gao wang zhong'],
+['高风亮节','gao feng liang jie'],['高瞻远瞩','gao zhan yuan zhu'],['胸怀大志','xiong huai da zhi'],['志存高远','zhi cun gao yuan'],
+['志向远大','zhi xiang yuan da'],['抱负不凡','bao fu bu fan'],['雄心壮志','xiong xin zhuang zhi'],['壮志凌云','zhuang zhi ling yun'],
+['鲲鹏展翅','kun peng zhan chi'],['鹏程万里','peng cheng wan li'],['前程似锦','qian cheng si jin'],['前途无量','qian tu wu liang'],
+['大有可为','da you ke wei'],['大有作为','da you zuo wei'],['发奋图强','fa fen tu qiang'],['卧薪尝胆','wo xin chang dan'],
+['励精图治','li jing tu zhi'],['发奋有为','fa fen you wei'],['有所作为','you suo zuo wei'],['恪尽职守','ke jin zhi shou'],
+['忠于职守','zhong yu zhi shou'],['各尽其责','ge jin qi ze'],['各司其职','ge si qi zhi'],['分工合作','fen gong he zuo'],
+['通力合作','tong li he zuo'],['群策群力','qun ce qun li'],['集思广益','ji si guang yi'],['广开言路','guang kai yan lu'],
+['纳谏如流','na jian ru liu'],['从谏如流','cong jian ru liu'],['兼听则明','jian ting ze ming'],['博采众议','bo cai zhong yi'],
+['广纳贤才','guang na xian cai'],['任人唯贤','ren ren wei xian'],['举贤任能','ju xian ren neng'],['知人善任','zhi ren shan ren'],
+['用人不疑','yong ren bu yi'],['人尽其才','ren jin qi cai'],['各得其所','ge de qi suo'],['恰如其分','qia ru qi fen'],
+['适可而止','shi ke er zhi'],['量力而行','liang li er xing'],['审时度势','shen shi duo shi'],['因势利导','yin shi li dao'],
+['随机应变','sui ji ying bian'],['灵活变通','ling huo bian tong'],['通权达变','tong quan da bian'],['当机立断','dang ji li duan'],
+['果断决策','guo duan jue ce'],['雷厉风行','lei li feng xing'],['速战速决','su zhan su jue'],['一鼓作气','yi gu zuo qi'],
+['趁热打铁','chen re da tie'],['不失时机','bu shi shi ji'],['见机行事','jian ji xing shi'],['相机而动','xiang ji er dong'],
+['未雨绸缪','wei yu chou mou'],['防患未然','fang huan wei ran'],['防微杜渐','fang wei du jian'],['居安思危','ju an si wei'],
+['有备无患','you bei wu huan'],['深谋远虑','shen mou yuan lv'],['老谋深算','lao mou shen suan'],['运筹帷幄','yun chou wei wo'],
+['胸有成竹','xiong you cheng zhu'],['心中有数','xin zhong you shu'],['了如指掌','liao ru zhi zhang'],['一清二楚','yi qing er chu'],
+['明察秋毫','ming cha qiu hao'],['洞若观火','dong ruo guan huo'],['明辨是非','ming bian shi fei'],['是非分明','shi fei fen ming'],
+['黑白分明','hei bai fen ming'],['爱憎分明','ai zeng fen ming'],['赏罚分明','shang fa fen ming'],['奖惩有度','jiang cheng you du'],
+['恩威并施','en wei bing shi'],['宽严相济','kuan yan xiang ji'],['软硬兼施','ruan ying jian shi'],['以柔克刚','yi rou ke gang'],
+['刚柔并济','gang rou bing ji'],['绵里藏针','mian li cang zhen'],['外圆内方','wai yuan nei fang'],['不卑不亢','bu bei bu kang'],
+['落落大方','luo luo da fang'],['举止得体','ju zhi de ti'],['不慌不忙','bu huang bu mang'],['从容不迫','cong rong bu po'],
+['镇定自若','zhen ding zi ruo'],['泰然自若','tai ran zi ruo'],['处变不惊','chu bian bu jing'],['面不改色','mian bu gai se'],
+['不动声色','bu dong sheng se'],['心平气和','xin ping qi he'],['平心静气','ping xin jing qi'],['冷静沉着','leng jing chen zhuo'],
+['沉着冷静','chen zhuo leng jing'],['忍辱负重','ren ru fu zhong'],['委曲求全','wei qu qiu quan'],['顾全大局','gu quan da ju'],
+['统筹兼顾','tong chou jian gu'],['深明大义','shen ming da yi'],['通情达理','tong qing da li'],['知情达理','zhi qing da li'],
+['善解人意','shan jie ren yi'],['体贴周到','ti tie zhou dao'],['关怀体贴','guan huai ti tie'],['问长问短','wen chang wen duan'],
+['问寒问暖','wen han wen nuan'],['知冷知热','zhi leng zhi re'],['细致入微','xi zhi ru wei'],['精细入微','jing xi ru wei'],
+['面面俱到','mian mian ju dao'],['周到细致','zhou dao xi zhi'],['井井有条','jing jing you tiao'],['有条不紊','you tiao bu wen'],
+['井然有序','jing ran you xu'],['按部就班','an bu jiu ban'],['有条有理','you tiao you li'],['层次分明','ceng ci fen ming'],
+['主次分明','zhu ci fen ming'],['轻重缓急','qing zhong huan ji'],['分清主次','fen qing zhu ci'],['抓住重点','zhua zhu zhong dian'],
+['提纲挈领','ti gang qie ling'],['纲举目张','gang ju mu zhang'],['删繁就简','shan fan jiu jian'],['化繁为简','hua fan wei jian'],
+['简明扼要','jian ming e yao'],['言简意赅','yan jian yi gai'],['要言不烦','yao yan bu fan'],['一语中的','yi yu zhong di'],
+['一针见血','yi zhen jian xue'],['开门见山','kai men jian shan'],['直截了当','zhi jie liao dang'],['单刀直入','dan dao zhi ru'],
+['直言不讳','zhi yan bu hui'],['心直口快','xin zhi kou kuai'],['快人快语','kuai ren kuai yu'],['实话实说','shi hua shi shuo'],
+['实事求是','shi shi qiu shi'],['求真务实','qiu zhen wu shi'],['知行合一','zhi xing he yi'],['言出必行','yan chu bi xing'],
+['说到做到','shuo dao zuo dao'],['一诺千金','yi nuo qian jin'],['恪守承诺','ke shou cheng nuo'],['坚守信用','jian shou xin yong'],
+['童叟无欺','tong sou wu qi'],['货真价实','huo zhen jia shi'],['名副其实','ming fu qi shi'],['名不虚传','ming bu xu chuan'],
+['言行相符','yan xing xiang fu'],['信守不渝','xin shou bu yu'],['始终不渝','shi zhong bu yu'],['矢志不渝','shi zhi bu yu'],
+['忠贞不渝','zhong zhen bu yu'],['坚贞不屈','jian zhen bu qu'],['忠心耿耿','zhong xin geng geng'],['赤胆忠心','chi dan zhong xin'],
+['呕心沥血','ou xin li xue'],['鞠躬尽瘁','ju gong jin cui'],['舍生取义','she sheng qu yi'],['杀身成仁','sha shen cheng ren'],
+['视死如归','shi si ru gui'],['宁死不屈','ning si bu qu'],['大义灭亲','da yi mie qin'],['义无反顾','yi wu fan gu'],
+['义不容辞','yi bu rong ci'],['责无旁贷','ze wu pang dai'],['当仁不让','dang ren bu rang'],['自告奋勇','zi gao fen yong'],
+['毛遂自荐','mao sui zi jian'],['勇担重任','yong dan zhong ren'],['任重道远','ren zhong dao yuan'],['负重前行','fu zhong qian xing'],
+['艰苦奋斗','jian ku fen dou'],['艰苦创业','jian ku chuang ye'],['白手起家','bai shou qi jia'],['勤勉尽责','qin mian jin ze'],
+['责任重大','ze ren zhong da'],['肩负重任','jian fu zhong ren'],['勇于担当','yong yu dan dang'],
+['推己及人','tui ji ji ren'],['己所不欲','ji suo bu yu'],['反求诸己','fan qiu zhu ji'],['同心同德','tong xin tong de'],
+['协力同心','xie li tong xin'],['休戚与共','xiu qi yu gong'],['休戚相关','xiu qi xiang guan'],['息息相关','xi xi xiang guan'],
+['唇齿相依','chun chi xiang yi'],['唇亡齿寒','chun wang chi han'],['解衣推食','jie yi tui shi'],['各抒己见','ge shu ji jian'],
+['情真意切','qing zhen yi qie'],['深情厚谊','shen qing hou yi'],['情同骨肉','qing tong gu rou'],['推诚不饰','tui cheng bu shi']
+],
+3:[
+['反躬自省','fan gong zi xing'],['闭门思过','bi men si guo'],['三省吾身','san xing wu shen'],['日省吾身','ri xing wu shen'],
+['知错能改','zhi cuo neng gai'],['改过自新','gai guo zi xin'],['痛改前非','tong gai qian fei'],['洗心革面','xi xin ge mian'],
+['迷途知返','mi tu zhi fan'],['悬崖勒马','xuan ya le ma'],['浪子回头','lang zi hui tou'],['亡羊补牢','wang yang bu lao'],
+['引以为戒','yin yi wei jie'],['前车之鉴','qian che zhi jian'],['引以为鉴','yin yi wei jian'],['汲取教训','ji qu jiao xun'],
+['闻过则喜','wen guo ze xi'],['择善而从','ze shan er cong'],['改弦更张','gai xian geng zhang'],['改弦易辙','gai xian yi zhe'],
+['另辟蹊径','ling pi xi jing'],['另起炉灶','ling qi lu zao'],['革故鼎新','ge gu ding xin'],['推陈出新','tui chen chu xin'],
+['除旧布新','chu jiu bu xin'],['吐故纳新','tu gu na xin'],['与时俱进','yu shi ju jin'],['开拓进取','kai tuo jin qu'],
+['锐意进取','rui yi jin qu'],['开拓创新','kai tuo chuang xin'],['勇于创新','yong yu chuang xin'],['标新立异','biao xin li yi'],
+['独树一帜','du shu yi zhi'],['别具一格','bie ju yi ge'],['独具匠心','du ju jiang xin'],['匠心独运','jiang xin du yun'],
+['别出心裁','bie chu xin cai'],['自出机杼','zi chu ji zhu'],['深思远虑','shen si yuan lv'],['高屋建瓴','gao wu jian ling'],
+['见微知著','jian wei zhi zhu'],['一叶知秋','yi ye zhi qiu'],['洞察秋毫','dong cha qiu hao'],['独具慧眼','du ju hui yan'],
+['慧眼识珠','hui yan shi zhu'],['火眼金睛','huo yan jin jing'],['明镜高悬','ming jing gao xuan'],['心如明镜','xin ru ming jing'],
+['心明眼亮','xin ming yan liang'],['泾渭分明','jing wei fen ming'],['一分为二','yi fen wei er'],['客观公正','ke guan gong zheng'],
+['不偏不倚','bu pian bu yi'],['公正无私','gong zheng wu si'],['秉公执法','bing gong zhi fa'],['执法如山','zhi fa ru shan'],
+['法不阿贵','fa bu e gui'],['率先垂范','shuai xian chui fan'],['为人表率','wei ren biao shuai'],['身先士卒','shen xian shi zu'],
+['模范带头','mo fan dai tou'],['耳濡目染','er ru mu ran'],['潜移默化','qian yi mo hua'],['春风化雨','chun feng hua yu'],
+['润物无声','run wu wu sheng'],['耐心细致','nai xin xi zhi'],['苦口婆心','ku kou po xin'],['语重心长','yu zhong xin chang'],
+['谆谆教诲','zhun zhun jiao hui'],['金玉良言','jin yu liang yan'],['良药苦口','liang yao ku kou'],['忠言逆耳','zhong yan ni er'],
+['忠告善道','zhong gao shan dao'],['良师益友','liang shi yi you'],['良师诤友','liang shi zheng you'],['直言相劝','zhi yan xiang quan'],
+['好言相劝','hao yan xiang quan'],['晓以大义','xiao yi da yi'],['晓以利害','xiao yi li hai'],['陈明利害','chen ming li hai'],
+['以情动人','yi qing dong ren'],['情理交融','qing li jiao rong'],['合情合理','he qing he li'],['入情入理','ru qing ru li'],
+['在情在理','zai qing zai li'],['名正言顺','ming zheng yan shun'],['师出有名','shi chu you ming'],['正大光明','zheng da guang ming'],
+['襟怀坦白','jin huai tan bai'],['胸怀坦荡','xiong huai tan dang'],['坦坦荡荡','tan tan dang dang'],['问心无愧','wen xin wu kui'],
+['心安理得','xin an li de'],['俯仰无愧','fu yang wu kui'],['无愧于心','wu kui yu xin'],['泰然处之','tai ran chu zhi'],
+['处之泰然','chu zhi tai ran'],['安之若素','an zhi ruo su'],['随遇而安','sui yu er an'],['顺其自然','shun qi zi ran'],
+['乐天知命','le tian zhi ming'],['达观知命','da guan zhi ming'],['豁达开朗','huo da kai lang'],['心胸开阔','xin xiong kai kuo'],
+['宽宏大量','kuan hong da liang'],['海纳百川','hai na bai chuan'],['有容乃大','you rong nai da'],['豁达大度','huo da da du'],
+['宽大为怀','kuan da wei huai'],['既往不咎','ji wang bu jiu'],['不念旧恶','bu nian jiu e'],['不计前嫌','bu ji qian xian'],
+['冰释前嫌','bing shi qian xian'],['握手言和','wo shou yan he'],['化敌为友','hua di wei you'],['和衷共济','he zhong gong ji'],
+['和气生财','he qi sheng cai'],['以和为贵','yi he wei gui'],['息事宁人','xi shi ning ren'],['排难解纷','pai nan jie fen'],
+['调解纠纷','tiao jie jiu fen'],['化解矛盾','hua jie mao dun'],['求同存异','qiu tong cun yi'],['和而不同','he er bu tong'],
+['周而不比','zhou er bu bi'],['群而不党','qun er bu dang'],['君子之交','jun zi zhi jiao'],['患难之交','huan nan zhi jiao'],
+['莫逆之交','mo ni zhi jiao'],['志同道合','zhi tong dao he'],['志趣相投','zhi qu xiang tou'],['意气相投','yi qi xiang tou'],
+['情投意合','qing tou yi he'],['一见如故','yi jian ru gu'],['相见恨晚','xiang jian hen wan'],['形影不离','xing ying bu li'],
+['朝夕相处','zhao xi xiang chu'],['朝夕相伴','zhao xi xiang ban'],['肝胆相照','gan dan xiang zhao'],['披肝沥胆','pi gan li dan'],
+['推诚相见','tui cheng xiang jian'],['开诚布公','kai cheng bu gong'],['开诚相见','kai cheng xiang jian'],['坦诚相待','tan cheng xiang dai'],
+['赤诚相见','chi cheng xiang jian'],['真心实意','zhen xin shi yi'],['真情实意','zhen qing shi yi'],['诚心诚意','cheng xin cheng yi'],
+['真心诚意','zhen xin cheng yi'],['实心实意','shi xin shi yi'],['敞开心扉','chang kai xin fei'],['畅所欲言','chang suo yu yan'],
+['知无不言','zhi wu bu yan'],['言无不尽','yan wu bu jin'],['开怀畅谈','kai huai chang tan'],['促膝谈心','cu xi tan xin'],
+['倾心交谈','qing xin jiao tan'],['苦口相劝','ku kou xiang quan'],['谆谆告诫','zhun zhun gao jie'],['殷切期望','yin qie qi wang'],
+['寄予厚望','ji yu hou wang'],['望子成龙','wang zi cheng long'],['望女成凤','wang nv cheng feng'],['望眼欲穿','wang yan yu chuan'],
+['翘首以盼','qiao shou yi pan'],['期盼已久','qi pan yi jiu'],['不负众望','bu fu zhong wang'],['众望所归','zhong wang suo gui'],
+['深孚众望','shen fu zhong wang'],['当之无愧','dang zhi wu kui'],['实至名归','shi zhi ming gui'],['有声有色','you sheng you se'],
+['卓尔不群','zhuo er bu qun'],['鹤立鸡群','he li ji qun'],['超凡脱俗','chao fan tuo su'],['与众不同','yu zhong bu tong'],
+['独当一面','du dang yi mian'],['别开生面','bie kai sheng mian'],['耳目一新','er mu yi xin'],['焕然一新','huan ran yi xin'],
+['面目一新','mian mu yi xin'],['气象一新','qi xiang yi xin'],['万象更新','wan xiang geng xin'],['欣欣向荣','xin xin xiang rong'],
+['蒸蒸日上','zheng zheng ri shang'],['方兴未艾','fang xing wei ai'],['如日方升','ru ri fang sheng'],['蓬勃发展','peng bo fa zhan'],
+['繁荣昌盛','fan rong chang sheng'],
+['反躬自责','fan gong zi ze'],['引咎自责','yin jiu zi ze'],['内省不疚','nei xing bu jiu'],['慎独慎微','shen du shen wei'],
+['慎终如始','shen zhong ru shi'],['克己复礼','ke ji fu li'],['约法三章','yue fa san zhang'],['严守纪律','yan shou ji lv'],
+['恪守规矩','ke shou gui ju'],['遵规守纪','zun gui shou ji'],['修心养性','xiu xin yang xing'],['涵养性情','han yang xing qing'],
+['韬光养晦','tao guang yang hui'],['厚积薄发','hou ji bo fa'],['蓄势待发','xu shi dai fa'],['养精蓄锐','yang jing xu rui'],
+['持志养气','chi zhi yang qi'],['砥砺前行','di li qian xing']
+],
+4:[
+['谦谦君子','qian qian jun zi'],['正人君子','zheng ren jun zi'],['君子之风','jun zi zhi feng'],['冰清玉洁','bing qing yu jie'],
+['玉洁冰清','yu jie bing qing'],['洁身自爱','jie shen zi ai'],['守身如玉','shou shen ru yu'],['一清二白','yi qing er bai'],
+['清清白白','qing qing bai bai'],['胸怀磊落','xiong huai lei luo'],['坦荡如砥','tan dang ru di'],['心地光明','xin di guang ming'],
+['心口如一','xin kou ru yi'],['言信行果','yan xin xing guo'],['言行信果','yan xing xin guo'],['季布一诺','ji bu yi nuo'],
+['言必有信','yan bi you xin'],['信誓旦旦','xin shi dan dan'],['海誓山盟','hai shi shan meng'],['海枯石烂','hai ku shi lan'],
+['矢志不移','shi zhi bu yi'],['坚定不移','jian ding bu yi'],['坚如磐石','jian ru pan shi'],['稳如泰山','wen ru tai shan'],
+['固若金汤','guo ruo jin tang'],['安如泰山','an ru tai shan'],['岿然不动','kui ran bu dong'],['雷打不动','lei da bu dong'],
+['无怨无悔','wu yuan wu hui'],['心甘情愿','xin gan qing yuan'],['甘心情愿','gan xin qing yuan'],['奋不顾身','fen bu gu shen'],
+['前赴后继','qian fu hou ji'],['前仆后继','qian pu hou ji'],['承前启后','cheng qian qi hou'],['继往开来','ji wang kai lai'],
+['薪火相传','xin huo xiang chuan'],['一脉相承','yi mai xiang cheng'],['源远流长','yuan yuan liu chang'],['博大精深','bo da jing shen'],
+['博大胸怀','bo da xiong huai'],['包罗万象','bao luo wan xiang'],['兼容并包','jian rong bing bao'],['雅量高致','ya liang gao zhi'],
+['宽仁大度','kuan ren da du'],['仁者爱人','ren zhe ai ren'],['仁爱之心','ren ai zhi xin'],['博爱之心','bo ai zhi xin'],
+['悲天悯人','bei tian min ren'],['恻隐之心','ce yin zhi xin'],['慈悲为怀','ci bei wei huai'],['乐善好施','le shan hao shi'],
+['扶弱济贫','fu ruo ji pin'],['济困扶危','ji kun fu wei'],['周急济贫','zhou ji ji pin'],['慷慨解囊','kang kai jie nang'],
+['解囊相助','jie nang xiang zhu'],['仗义疏财','zhang yi shu cai'],['乐善不倦','le shan bu juan'],['成人之美','cheng ren zhi mei'],
+['玉成其事','yu cheng qi shi'],['成人达己','cheng ren da ji'],['惠及他人','hui ji ta ren'],['泽被后世','ze bei hou shi'],
+['造福一方','zao fu yi fang'],['惠泽万民','hui ze wan min'],['普济众生','pu ji zhong sheng'],['兼济天下','jian ji tian xia'],
+['兼善天下','jian shan tian xia'],['独善其身','du shan qi shen'],['修齐治平','xiu qi zhi ping'],['修身齐家','xiu shen qi jia'],
+['齐家治国','qi jia zhi guo'],['治国安邦','zhi guo an bang'],['安邦定国','an bang ding guo'],['国泰民安','guo tai min an'],
+['民安国泰','min an guo tai'],['安居乐业','an ju le ye'],['丰衣足食','feng yi zu shi'],['物阜民丰','wu fu min feng'],
+['太平盛世','tai ping sheng shi'],['政通人和','zheng tong ren he'],['百业兴旺','bai ye xing wang'],['兴旺发达','xing wang fa da'],
+['繁荣富强','fan rong fu qiang'],['国富民强','guo fu min qiang'],['民富国强','min fu guo qiang'],['富强民主','fu qiang min zhu'],
+['天下为公','tian xia wei gong'],['天下大同','tian xia da tong'],['天下兴亡','tian xia xing wang'],['匹夫有责','pi fu you ze'],
+['位卑忧国','wei bei you guo'],['忧国忧民','you guo you min'],['忧国忘家','you guo wang jia'],['精忠报国','jing zhong bao guo'],
+['尽忠报国','jin zhong bao guo'],['忠心报国','zhong xin bao guo'],['忠君爱国','zhong jun ai guo'],['保家卫国','bao jia wei guo'],
+['舍身为国','she shen wei guo'],['以身许国','yi shen xu guo'],['为国捐躯','wei guo juan qu'],['马革裹尸','ma ge guo shi'],
+['捐躯赴难','juan qu fu nan'],['临危受命','lin wei shou ming'],['力挽狂澜','li wan kuang lan'],['中流砥柱','zhong liu di zhu'],
+['砥柱中流','di zhu zhong liu'],['见危授命','jian wei shou ming'],['舍生忘死','she sheng wang si'],['出生入死','chu sheng ru si'],
+['赴汤蹈火','fu tang dao huo'],['万死不辞','wan si bu ci'],['在所不辞','zai suo bu ci'],['义薄云天','yi bo yun tian'],
+['高义薄云','gao yi bo yun'],['气壮山河','qi zhuang shan he'],['气吞山河','qi tun shan he'],['浩然正气','hao ran zheng qi'],
+['正气凛然','zheng qi lin ran'],['正义凛然','zheng yi lin ran'],['高洁傲岸','gao jie ao an'],['傲骨嶙峋','ao gu lin xun'],
+['铁骨铮铮','tie gu zheng zheng'],['铮铮铁骨','zheng zheng tie gu'],['不阿权贵','bu e quan gui'],['不畏强权','bu wei qiang quan'],
+['不畏强暴','bu wei qiang bao'],['宁折不弯','ning zhe bu wan'],['坚贞不渝','jian zhen bu yu'],['忠贞不二','zhong zhen bu er'],
+['忠心不二','zhong xin bu er'],['矢忠不二','shi zhong bu er'],['忠肝义胆','zhong gan yi dan'],['侠肝义胆','xia gan yi dan'],
+['义胆忠肝','yi dan zhong gan'],['侠义心肠','xia yi xin chang'],['古道热肠','gu dao re chang'],['满腔热忱','man qiang re chen'],
+['热血沸腾','re xue fei teng'],['一腔热血','yi qiang re xue'],['赤子之心','chi zi zhi xin'],['赤诚之心','chi cheng zhi xin'],
+['拳拳之心','quan quan zhi xin'],['拳拳服膺','quan quan fu ying'],['笃行不倦','du xing bu juan'],['笃学不倦','du xue bu juan'],
+['力学笃行','li xue du xing'],['躬行实践','gong xing shi jian'],['身体力行','shen ti li xing'],['事必躬亲','shi bi gong qin'],
+['亲力亲为','qin li qin wei'],['践行不辍','jian xing bu chuo'],['日进有功','ri jin you gong'],['日就月将','ri jiu yue jiang'],
+['精进不休','jing jin bu xiu'],['竿头日进','gan tou ri jin'],['百尺竿头','bai chi gan tou'],['更进一竿','geng jin yi gan'],
+['登堂入室','deng tang ru shi'],['升堂入室','sheng tang ru shi'],['炉火纯青','lu huo chun qing'],['登峰造极','deng feng zao ji'],
+['出神入化','chu shen ru hua'],['鬼斧神工','gui fu shen gong'],['巧夺天工','qiao duo tian gong'],['尽善尽美','jin shan jin mei'],
+['十全十美','shi quan shi mei'],['完美无缺','wan mei wu que'],['白璧无瑕','bai bi wu xia'],['瑕不掩瑜','xia bu yan yu'],
+['冰清玉润','bing qing yu run'],['德艺双馨','de yi shuang xin'],['才德兼备','cai de jian bei'],['德学兼优','de xue jian you'],
+['文以载道','wen yi zai dao'],['文以明道','wen yi ming dao'],['诗礼传家','shi li chuan jia'],['耕读传家','geng du chuan jia'],
+['书香门第','shu xiang men di'],['钟灵毓秀','zhong ling yu xiu'],['人杰地灵','ren jie di ling'],['物华天宝','wu hua tian bao'],
+['龙章凤姿','long zhang feng zi'],['卓尔不凡','zhuo er bu fan'],['卓荦不羁','zhuo luo bu ji'],['才华出众','cai hua chu zhong'],
+['才华盖世','cai hua gai shi'],['旷世奇才','kuang shi qi cai'],
+['恭俭庄敬','gong jian zhuang jing'],['温文尔雅','wen wen er ya'],['谦恭有礼','qian gong you li'],['和光同尘','he guang tong chen'],
+['上善若水','shang shan ruo shui'],['厚德载物','hou de zai wu'],['弘毅致远','hong yi zhi yuan'],['任重致远','ren zhong zhi yuan'],
+['志洁行芳','zhi jie xing fang'],['高情远致','gao qing yuan zhi'],['雅人深致','ya ren shen zhi'],['冰壶秋月','bing hu qiu yue'],
+['光风霁月','guang feng ji yue'],['高山景行','gao shan jing xing'],['高山仰止','gao shan yang zhi']
+]
+};
+function cnLine(text,pinyin){
+  const chars=[...text], parts=pinyin.split(' '), result=[];
+  const punctuation={
+    '。':'ju hao','，':'dou hao','、':'dun hao','；':'fen hao','：':'mao hao',
+    '！':'tan hao','？':'wen hao','“':'shuang yin hao zuo','”':'shuang yin hao you',
+    '‘':'dan yin hao zuo','’':'dan yin hao you','（':'zuo kuo hao','）':'you kuo hao',
+    '《':'shu ming hao zuo','》':'shu ming hao you','—':'po zhe hao'
+  };
+  let pi=0;
+  chars.forEach(ch=>{
+    if(punctuation[ch])result.push([ch,punctuation[ch]]);
+    else result.push([ch,parts[pi++]]);
+  });
+  if(pi!==parts.length||result.some(item=>!item[1]))throw new Error('中文素材拼音数量不匹配：'+text);
+  return result;
+}
+MAT.cn_art={
+  1:{titles:['校园里的秋天','我的学习方法'],texts:[
+    cnLine('秋天的校园色彩斑斓。银杏叶变成了金黄色，像一把把小扇子。我们在树下观察变化，感受大自然的美好。','qiu tian de xiao yuan se cai ban lan yin xing ye bian cheng le jin huang se xiang yi ba ba xiao shan zi wo men zai shu xia guan cha bian hua gan shou da zi ran de mei hao'),
+    cnLine('学习要讲究方法。上课认真听讲，课后及时整理笔记，遇到问题主动思考。只要每天进步一点点，就能积累出扎实的本领。','xue xi yao jiang jiu fang fa shang ke ren zhen ting jiang ke hou ji shi zheng li bi ji yu dao wen ti zhu dong si kao zhi yao mei tian jin bu yi dian dian jiu neng ji lei chu zha shi de ben ling')
+  ]},
+  2:{titles:['一次科学观察','把小事做好'],texts:[
+    cnLine('我用一周时间观察豆芽的生长。每天记录高度和颜色，比较光照不同的变化。观察让我明白，结论要以事实为依据。','wo yong yi zhou shi jian guan cha dou ya de sheng chang mei tian ji lu gao du he yan se bi jiao guang zhao bu tong de bian hua guan cha rang wo ming bai jie lun yao yi shi shi wei yi ju'),
+    cnLine('远大的目标需要踏实的行动。把一道题做对，把一页书读懂，把一次发言准备充分，这些小事坚持做好，就会带来真正的成长。','yuan da de mu biao xu yao ta shi de xing dong ba yi dao ti zuo dui ba yi ye shu du dong ba yi ci fa yan zhun bei chong fen zhe xie xiao shi jian chi zuo hao jiu hui dai lai zhen zheng de cheng zhang')
+  ]},
+  3:{titles:['作文积累：坚持','作文积累：观察生活','草原（老舍）','匆匆（朱自清）','少年闰土（鲁迅）'],texts:[
+    cnLine('坚持不是一句口号，而是遇到困难时仍然愿意再试一次。每天练习，及时订正，认真复盘，普通的努力也会在时间里汇成可观的进步。','jian chi bu shi yi ju kou hao er shi yu dao kun nan shi reng ran yuan yi zai shi yi ci mei tian lian xi ji shi ding zheng ren zhen fu pan pu tong de nu li ye hui zai shi jian li hui cheng ke guan de jin bu'),
+    cnLine('生活中的细节常常藏着写作的素材。清晨的风、雨后的气味、同学专注的神情，都值得我们用心观察。先看清楚，再写具体，文章才会真实而生动。','sheng huo zhong de xi jie chang chang cang zhe xie zuo de su cai qing chen de feng yu hou de qi wei tong xue zhuan zhu de shen qing dou zhi de wo men yong xin guan cha xian kan qing chu zai xie ju ti wen zhang cai hui zhen shi er sheng dong'),
+    cnLine('那里的天比别处的更可爱，空气是那么清鲜，天空是那么明朗，使我总想高歌一曲，表示我满心的愉快。','na li de tian bi bie chu de geng ke ai kong qi shi na me qing xian tian kong shi na me ming lang shi wo zong xiang gao ge yi qu biao shi wo man xin de yu kuai'),
+    cnLine('燕子去了，有再来的时候；杨柳枯了，有再青的时候；桃花谢了，有再开的时候。','yan zi qu le you zai lai de shi hou yang liu ku le you zai qing de shi hou tao hua xie le you zai kai de shi hou'),
+    cnLine('深蓝的天空中挂着一轮金黄的圆月，下面是海边的沙地，都种着一望无际的碧绿的西瓜。','shen lan de tian kong zhong gua zhe yi lun jin huang de yuan yue xia mian shi hai bian de sha di dou zhong zhe yi wang wu ji de bi lv de xi gua')
+  ]},
+  4:{titles:['春（朱自清）','济南的冬天（老舍）','观沧海（曹操）','诫子书（诸葛亮）','论语：学与思','学弈（孟子）','两小儿辩日'],texts:[
+    cnLine('盼望着，盼望着，东风来了，春天的脚步近了。','pan wang zhe pan wang zhe dong feng lai le chun tian de jiao bu jin le'),
+    cnLine('对于一个在北平住惯的人，像我，冬天要是不刮风，便觉得是奇迹；济南的冬天是没有风声的。','dui yu yi ge zai bei ping zhu guan de ren xiang wo dong tian yao shi bu gua feng bian jue de shi qi ji ji nan de dong tian shi mei you feng sheng de'),
+    cnLine('东临碣石，以观沧海。水何澹澹，山岛竦峙。树木丛生，百草丰茂。秋风萧瑟，洪波涌起。','dong lin jie shi yi guan cang hai shui he dan dan shan dao song zhi shu mu cong sheng bai cao feng mao qiu feng xiao se hong bo yong qi'),
+    cnLine('夫君子之行，静以修身，俭以养德。非淡泊无以明志，非宁静无以致远。','fu jun zi zhi xing jing yi xiu shen jian yi yang de fei dan bo wu yi ming zhi fei ning jing wu yi zhi yuan'),
+    cnLine('学而不思则罔，思而不学则殆。','xue er bu si ze wang si er bu xue ze dai'),
+    cnLine('弈秋，通国之善弈者也。使弈秋诲二人弈，其一人专心致志，惟弈秋之为听。','yi qiu tong guo zhi shan yi zhe ye shi yi qiu hui er ren yi qi yi ren zhuan xin zhi zhi wei yi qiu zhi wei ting'),
+    cnLine('日初出大如车盖，及日中则如盘盂，此不为远者小而近者大乎？','ri chu chu da ru che gai ji ri zhong ze ru pan yu ci bu wei yuan zhe xiao er jin zhe da hu')
+  ]}
+};
+/* ================= 素材库：Python（严格匹配真实语法和字符格式） ================= */
+MAT.py_code={
+  1:[
+    'print("Hello, Python!")',
+    'name = "Hero"',
+    'age = 10',
+    'score = 100',
+    'print(name)',
+    'print("score:", score)',
+    'is_ready = True',
+    'message = "Keep learning!"',
+    'language = "Python"',
+    'print(language)'
+  ],
+  2:[
+    'print("great" if score >= 90 else "keep trying")',
+    '[print(i) for i in range(5)]',
+    'items = ["book", "pen", "key"]',
+    '[print(item) for item in ["book", "pen", "key"]]',
+    'numbers = [1, 2, 3, 4]',
+    'total = sum(numbers)',
+    'print("welcome" if name == "Hero" else "hello")',
+    'score = score + 1 if score < 101 else score',
+    'words = ["learn", "build", "share"]',
+    'print(len(words))'
+  ],
+  3:[
+    'greet = lambda name: "Hello, " + name',
+    'add = lambda a, b: a + b',
+    'result = (lambda a, b: a + b)(2, 3)',
+    'user = {"name": "Kai", "level": 1}',
+    'print(user["name"])',
+    'pairs = [(key, value) for key, value in user.items()]',
+    'is_fast = lambda wpm: wpm >= 20',
+    'tasks = ["read", "type", "code"]',
+    'done = [task for task in tasks if task != "read"]',
+    'print(done)'
+  ],
+  4:[
+    'import json',
+    'data = {"role": "user", "content": "Hello"}',
+    'text = json.dumps(data)',
+    'messages = [{"role": "user", "content": "Explain Python"}]',
+    'make_prompt = lambda topic: "Teach me " + topic',
+    'prompt = (lambda topic: "Teach me " + topic)("loops")',
+    'tools = ["search", "calculator", "code"]',
+    'actions = ["use " + tool for tool in tools]',
+    'response = {"answer": "learn by building"}',
+    'print(response["answer"])'
+  ]
+};
+/* ================= 羽毛球游戏词库 =================
+   与练习模式分开，专供游戏使用。
+   按单词长度分成四级，配合难度递进；总词量足够大，
+   保证一局之内（配合整局去重）不会出现同一个单词。 */
+const GAME_WORDS={
+  1:[
+    'cat','dog','sun','red','big','hat','bus','pig','boy','girl',
+    'day','fun','run','jump','book','pen','bag','cup','bed','map',
+    'star','tree','fish','bird','rain','snow','milk','egg','hand','foot',
+    'head','eye','ball','cake','cold','door','duck','face','farm','fire',
+    'game','gift','gold','good','home','king','lake','lamp','leaf','lion',
+    'long','moon','more','nice','open','park','play','road','room','ship',
+    'shoe','sing','song','swim','time','walk','warm','wind','wood','year'
+  ],
+  2:[
+    'apple','water','school','friend','animal','house','happy','small','green','orange',
+    'yellow','purple','pencil','ruler','color','music','dance','family','basket','garden',
+    'bread','bridge','camera','candle','cherry','circle','cloud','coffee','desert','dinner',
+    'doctor','dragon','dream','flower','forest','island','jacket','jungle','ladder','letter',
+    'market','minute','mirror','monkey','mother','father','number','people','planet','pocket',
+    'rabbit','reason','rocket','silver','sister','singer','spring','summer','sunset','table',
+    'ticket','tomato','travel','valley','window','winter','writer','autumn','bright','cheese'
+  ],
+  3:[
+    'teacher','student','morning','evening','kitchen','village','breakfast','beautiful','important','yesterday',
+    'tomorrow','favorite','mountain','library','hospital','country','elephant','umbrella','different','question',
+    'science','history','holiday','adventure','remember','together','everyone','computer','sometimes','surprise',
+    'wonderful','exercise','dinosaur','volcano','treasure','journey','champion','curious','popular','delicious',
+    'vegetable','birthday','calendar','chocolate','classroom','continent','dangerous','discover','industry','knowledge',
+    'language','magazine','national','painting','peaceful','practice','president','probably','sentence','shoulder',
+    'something','special','station','suddenly','telephone','triangle','vacation','yourself'
+  ],
+  4:[
+    'interesting','grandparent','strawberry','achievement','atmosphere','celebration','comfortable','communicate','competition','concentrate',
+    'environment','experience','imagination','information','international','opportunity','performance','preparation','responsible','temperature',
+    'understand','university','vocabulary','conversation','entertainment','government','instrument','mathematics','organization','population',
+    'technology','traditional','unbelievable','unfortunately','neighborhood','photographer','professional','extraordinary','development','instructions'
+  ]
+};
+/* ================= 84 键笔记本键盘 ================= */
+const KB_LAYOUT=[
+  ['`','1','2','3','4','5','6','7','8','9','0','-','=','Bksp'],
+  ['Tab','Q','W','E','R','T','Y','U','I','O','P','[',']','\\'],
+  ['Caps','A','S','D','F','G','H','J','K','L',';',"'",'Enter'],
+  ['Shift','Z','X','C','V','B','N','M',',','.','/','Shift'],
+  ['Ctrl','Win','Alt','Space','Alt','Fn','Ctrl']
+];
+const KB_WIDE={'Bksp':1.6,'Tab':1.6,'Caps':1.9,'Enter':1.9,'Shift':2.3,'Ctrl':1.25,'Win':1.15,'Alt':1.15,'Fn':1.15,'Space':5.6};
+const KB_FN=new Set(['Esc','F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12','PrtSc','ScrLk','Pause']);
+/* 键盘工厂：每个 rootEl 得到一份独立高亮状态。
+   派生自 keyEls 单例版本，行为保持一致，供练习页和游戏页各自使用。 */
+function createKeyboard(rootEl){
+  const els={};
+  function build(){
+    rootEl.innerHTML='';
+    const seen={};
+    KB_LAYOUT.forEach(row=>{
+      const r=document.createElement('div');r.className='kb-row';
+      row.forEach(k=>{
+        const d=document.createElement('div');
+        d.className='key'+(KB_FN.has(k)?' fn':'')+(k==='Space'?' space':'');
+        const w=KB_WIDE[k];
+        if(w)d.style.flex=String(w);
+        d.textContent=k==='Space'?'␣':k;
+        /* 指法分区：普通键按字符归类，两个 Shift 分左右（第一个=左，第二个=右） */
+        const idx=seen[k]=(seen[k]||0);seen[k]++;
+        let fp=null;
+        if(k==='Space')fp='LT RT';
+        else if(k==='Shift'){fp=idx===0?'LP':'RP';d.dataset.side=idx===0?'left':'right'}
+        else if(k.length===1)fp=FINGER_OF_CHAR[k.toLowerCase()]||null;
+        if(fp){
+          d.dataset.finger=fp;
+          const meta=FINGER_META[fp.split(' ')[0]];
+          if(meta){d.style.setProperty('--fc',meta.color);d.style.setProperty('--fbg',meta.bg)}
+        }
+        r.appendChild(d);
+        (els[k]=els[k]||[]).push(d);
+      });
+      rootEl.appendChild(r);
+    });
+  }
+  function clear(){Object.values(els).forEach(a=>a.forEach(e=>e.classList.remove('hot','shake','shift-on')))}
+  function shake(k){(els[k]||[]).forEach(e=>{e.classList.remove('shake');void e.offsetWidth;e.classList.add('shake')})}
+  function showTarget(ch,shiftSide){
+    clear();
+    rootEl.dataset.target=ch===undefined?'':ch;
+    if(ch===undefined)return;
+    const kf=keyForChar(ch);
+    if(!kf.k)return;
+    if(kf.shift){
+      /* 指法模式会指定用哪一侧的 Shift；不指定时两侧都亮（原行为） */
+      let shifts=els['Shift']||[];
+      if(shiftSide)shifts=shifts.filter(e=>e.dataset.side===shiftSide);
+      shifts.forEach(e=>e.classList.add('hot'));
+    }
+    (els[kf.k]||[]).forEach(e=>{
+      e.classList.add('hot');
+      if(kf.shift)e.classList.add('shift-on');
+    });
+  }
+  /* 手指配色是键盘的基础外观：所有练习与游戏的键盘都常驻开启，
+     只有双手示意面板才限定在指法练习里。 */
+  rootEl.classList.add('finger');
+  build();
+  return {clear,shake,showTarget,els,rootEl};
+}
+/* 练习页键盘（主键盘），包装函数保持原有调用方式 */
+const mainKB=createKeyboard($('#kb'));
+const keyEls=mainKB.els;
+function kbClear(){mainKB.clear()}
+function kbShake(k){mainKB.shake(k)}
+function kbShowTarget(ch,shiftSide){mainKB.showTarget(ch,shiftSide)}
+/* 字符 → 按键映射 */
+const SHIFT_MAP={'~':'`','!':'1','@':'2','#':'3','$':'4','%':'5','^':'6','&':'7','*':'8','(':'9',')':'0','_':'-','+':'=','{':'[','}':']','|':'\\',':':';','"':"'",'<':',','>':'.','?':'/'};
+const KEY_MAP={'`':'`','1':'1','2':'2','3':'3','4':'4','5':'5','6':'6','7':'7','8':'8','9':'9','0':'0','-':'-','=':'=','[':'[',']':']','\\':'\\',';':';',"'":"'",',':',','.':'.','/':'/','Tab':'Tab'};
+function keyForChar(ch){
+  if(ch===' ')return {k:'Space',shift:false};
+  if(/[A-Za-z]/.test(ch))return {k:ch.toUpperCase(),shift:ch!==ch.toLowerCase()};
+  const base=SHIFT_MAP[ch];
+  if(base!==undefined)return {k:base,shift:true};
+  if(KEY_MAP[ch]!==undefined)return {k:KEY_MAP[ch],shift:false};
+  return {k:null,shift:false};
+}
+/* ================= 练习状态 ================= */
+/* start=0 表示还没开始计时：计时从「按下第一个字符」那一刻才起算，
+   这样进入页面后的思考和看题时间不会计入速度。 */
+let state={mode:null,pick:null,start:0,lastPick:null,timerId:null};
+let EN=null,CN=null;
+/* ================= 指法练习采集与评分 =================
+   firstTry/firstTotal → 击键正确率（能真正测到）
+   intervals           → 正确击键之间的间隔，用来算节奏稳定度（代理指标）
+   shiftOk/shiftTotal  → 大写时是否用了对侧 Shift（唯一能硬检测的指法错误） */
+let FG=null;
+function startFingerRound(){
+  FG={firstTry:0,firstTotal:0,intervals:[],lastCorrectAt:0,correctTotal:0,
+      shiftOk:0,shiftTotal:0,backspaces:0,combo:0,bestCombo:0,shiftSide:null,milestone:0};
+  $('#fingerCoach').innerHTML=fingerHandsHTML()+
+    '<div class="fc-text" id="fcText">把手指放回定位键，准备开始</div>'+
+    '<div class="fc-tip">左手食指摸 F，右手食指摸 J</div>';
+}
+function fingerHandsHTML(){
+  let s='<div class="fc-hands"><svg viewBox="0 0 320 118" class="finger-hand" aria-hidden="true">';
+  s+='<rect class="fh-palm" x="18" y="62" width="110" height="46" rx="22"/>';
+  s+='<rect class="fh-palm" x="192" y="62" width="110" height="46" rx="22"/>';
+  Object.keys(FINGER_META).forEach(code=>{
+    const m=FINGER_META[code];
+    s+='<rect class="fh-finger" data-finger="'+code+'" x="'+m.x+'" y="'+m.y+'" width="18" height="'+m.h+'" rx="9" style="--fc:'+m.color+'"/>';
+  });
+  return s+'</svg></div>';
+}
+/* 每次按键都先记一笔：正确率、节奏间隔、Shift 侧别、连击 */
+function fingerTrack(typed,correct){
+  if(!FG)return;
+  FG.firstTotal++;
+  if(correct)FG.firstTry++;
+  const target=EN.target[EN.pos];
+  if(target&&/[A-Z]/.test(target)){
+    FG.shiftTotal++;
+    const code=FINGER_OF_CHAR[target.toLowerCase()]||'';
+    const want=code[0]==='L'?'right':'left';
+    if(FG.shiftSide===want)FG.shiftOk++;
+  }
+  const now=Date.now();
+  if(correct){
+    if(FG.lastCorrectAt){
+      const dt=now-FG.lastCorrectAt;
+      if(dt>0)FG.intervals.push(dt);
+    }
+    FG.lastCorrectAt=now;
+    FG.combo++;
+    if(FG.combo>FG.bestCombo)FG.bestCombo=FG.combo;
+    FG.correctTotal++;
+    const step=Math.floor(FG.correctTotal/30);
+    if(step>FG.milestone){FG.milestone=step;toast(FINGER_CHEERS[(step-1)%FINGER_CHEERS.length])}
+  }else{
+    FG.combo=0;
+  }
+}
+/* 指法分 = 正确率 60 + 节奏稳定度 25 + Shift 规范 15 */
+function fingerScore(){
+  if(!FG)return {score:0,acc:100,rhythm:25,shift:15,accPts:60,avg:0,ready:false};
+  /* 还没开始按就按 100% 显示，避免开局就是刺眼的红色 0% */
+  const acc=FG.firstTotal?FG.firstTry/FG.firstTotal:1;
+  /* 只统计 2 秒以内的连续击键，避免串与串之间的停顿拉低稳定度 */
+  const clean=FG.intervals.filter(v=>v<=2000);
+  let rhythm=1;
+  if(clean.length>=8){
+    const mean=clean.reduce((a,b)=>a+b,0)/clean.length;
+    const sd=Math.sqrt(clean.reduce((a,b)=>a+(b-mean)*(b-mean),0)/clean.length);
+    const cv=mean>0?sd/mean:1;
+    rhythm=clamp(1-(cv-0.25)/0.75,0,1);
+  }
+  const shift=FG.shiftTotal?FG.shiftOk/FG.shiftTotal:1;
+  const accPts=60*acc,rhythmPts=25*rhythm,shiftPts=15*shift;
+  return {
+    score:Math.round(accPts+rhythmPts+shiftPts),
+    acc:Math.round(acc*100),accPts:Math.round(accPts),
+    rhythm:Math.round(rhythmPts),shift:Math.round(shiftPts),
+    mean:clean.length?Math.round(clean.reduce((a,b)=>a+b,0)/clean.length):0,
+    ready:FG.firstTotal>0
+  };
+}
+/* 当前字符该用哪根手指：更新键盘高亮 + 双手示意 + 文字提示 */
+function fingerShowTarget(ch){
+  const info=fingersForChar(ch);
+  kbShowTarget(ch,info.shiftSide);
+  $$('#fingerCoach .fh-finger').forEach(r=>r.classList.toggle('active',info.codes.indexOf(r.dataset.finger)>=0));
+  const txt=$('#fcText');
+  if(!txt)return;
+  if(!ch){txt.textContent='把手指放回定位键，准备开始';return}
+  if(info.space){txt.innerHTML='拇指 · 按 <b>空格</b>';return}
+  if(!info.letterCode){txt.textContent='这个键还没分配手指';return}
+  const letter=FINGER_META[info.letterCode].name;
+  if(info.upper){
+    txt.innerHTML=FINGER_META[info.shiftCode].name+'按住 <b>Shift</b>，'+letter+'按 <b>'+esc(ch)+'</b>';
+  }else{
+    txt.innerHTML=letter+' · 按 <b>'+esc(ch)+'</b>';
+  }
+}
+/* 按下第一个字符时调用：启动计时并开启计时器刷新 */
+function beginTiming(){
+  if(state.start)return;
+  state.start=Date.now();
+  if(state.timerId)clearInterval(state.timerId);
+  state.timerId=setInterval(()=>{
+    if(state.mode)updateMeters();
+    else stopTiming();
+  },100);
+}
+function stopTiming(){
+  if(state.timerId)clearInterval(state.timerId);
+  state.timerId=null;
+}
+/* 已经用掉的秒数（未开始则为 0） */
+function elapsedSec(){
+  return state.start?(Date.now()-state.start)/1000:0;
+}
+function fingerText(level){
+  const cfg=FINGER_LEVELS[level-1]||FINGER_LEVELS[0];
+  const strings=[];
+  for(let s=0;s<20;s++){
+    const len=4+rand(3);                 /* 每串 4-6 个键 */
+    let word='';
+    for(let i=0;i<len;i++){
+      let c=cfg.chars[rand(cfg.chars.length)];
+      if(cfg.upper)c=c.toUpperCase();
+      if(i>0&&c===word[i-1]){i--;continue} /* 避免同一串里连续重复同一个键 */
+      word+=c;
+    }
+    strings.push(word);
+  }
+  return strings.join(' ');
+}
+function pickPractice(cat,level){
+  if(cat==='en_word'){const ws=shuffle(MAT.en_word[level]||[]).slice(0,12);return {type:'en',text:ws.join(' ')}}
+  if(cat==='en_art'){const a=MAT.en_art[level];const i=rand(a.titles.length);return {type:'en',title:a.titles[i],text:a.texts[i]}}
+  if(cat==='finger'){return {type:'finger',title:'第 '+level+' 关 · '+FINGER_LEVELS[level-1].t,text:fingerText(level)}}
+  if(cat==='cn_word'){const ws=shuffle(MAT.cn_word[level]||[]).slice(0,10);return {type:'cn',title:'成语练习',units:ws}}
+  if(cat==='cn_art'){const a=MAT.cn_art[level];const i=rand(a.titles.length);return {type:'cn',title:a.titles[i],units:a.texts[i]}}
+  if(cat==='py_code'){
+    const snippets=MAT.py_code[level]||[];
+    if(!snippets.length)return null;
+    const count=Math.min(3,snippets.length);
+    const start=rand(Math.max(1,snippets.length-count+1));
+    const lines=snippets.slice(start,start+count);
+    return {type:'code',title:PY_LEVELS[level-1].t,text:lines.join(' '),displayLines:lines};
+  }
+  return null;
+}
+function startPractice(pick){
+  state.pick=pick;state.lastPick=pick;
+  const prac=pickPractice(pick.cat,pick.level);
+  if(!prac){toast('这个难度还没有内容');return}
+  stopTiming();
+  state.mode=prac.type;state.start=0;
+  $('#page-result').classList.remove('egg','finger');
+  const isFinger=prac.type==='finger';
+  const isTyping=prac.type==='en'||prac.type==='code'||isFinger;
+  $('#fingerCoach').hidden=!isFinger;
+  $('#kbTip').hidden=isFinger;
+  if(isFinger)startFingerRound();
+  let title=isFinger
+    ? CATS[pick.cat].name+' · '+prac.title
+    : CATS[pick.cat].name+' · 第'+pick.level+'级';
+  if(!isFinger&&prac.title)title+=' · '+prac.title;
+  $('#pracTitle').textContent=title;
+  $('#pracHint').textContent='';
+  $('#pracProgress').style.width='0%';
+  if(isTyping){
+    EN={target:prac.text,displayLines:prac.displayLines||null,pos:0,ok:0,err:0,bad:new Set()};
+    $('#cnInput').style.display='none';
+    $('#cnInput').blur();$('#cnInput').value='';
+    renderEN();updateEN();
+  }else{
+    CN={units:prac.units,target:prac.units.map(u=>u[0]).join(pick.cat==='cn_word'?' ':''),pos:0,bad:new Set(),errCount:0,pinyinMap:[],composing:false,spaced:pick.cat==='cn_word'};
+    buildPinyinMap();
+    $('#cnInput').style.display='block';
+    $('#cnInput').value='';
+    renderCN();updateCN();
+    setTimeout(()=>$('#cnInput').focus(),50);
+  }
+  showPage('page-practice');
+}
+/* 文本分行（英文按空格断行，中文按字数） */
+function wrapText(t,max){
+  const lines=[];let i=0;
+  while(i<t.length){
+    let j=Math.min(i+max,t.length);
+    if(j<t.length&&t[j-1]!==' '&&t[j]!==' '){
+      const sp=t.lastIndexOf(' ',j-1);
+      if(sp>i)j=sp+1;
+    }
+    lines.push(t.slice(i,j));i=j;
+  }
+  return lines;
+}
+/* ================= 英文练习 ================= */
+function renderEN(){
+  let gi=0;
+  const lines=EN.displayLines||[EN.target];
+  $('#pracText').innerHTML=lines.map(line=>{
+    const chars=line.split('').map(c=>{
+      const g=gi++;
+      const cls='ch'+(c===' '?' space':'');
+      return '<span class="'+cls+'" data-gi="'+g+'" data-c="'+esc(c)+'">'+(c===' '?'&nbsp;':esc(c))+'</span>';
+    }).join('');
+    if(gi<EN.target.length){
+      const sep='<span class="ch space" data-gi="'+gi+'" data-c=" ">&nbsp;</span>';
+      gi++;
+      return '<div class="row">'+chars+sep+'</div>';
+    }
+    return '<div class="row">'+chars+'</div>';
+  }).join('');
+}
+function updateEN(){
+  const els=$$('#pracText .ch');
+  els.forEach(el=>{
+    const i=Number(el.dataset.gi);
+    el.classList.remove('done','cur','bad');
+    if(i<EN.pos)el.classList.add('done');
+    else if(i===EN.pos)el.classList.add('cur');
+    else if(EN.bad.has(i))el.classList.add('bad');
+  });
+  $('#pracProgress').style.width=(EN.target.length?(EN.pos/EN.target.length*100):0)+'%';
+  updateMeters();
+  const cur=$('#pracText .cur');
+  const nextCh=cur&&Number(cur.dataset.gi)===EN.pos?cur.dataset.c:undefined;
+  if(state.mode==='finger')fingerShowTarget(nextCh);
+  else kbShowTarget(nextCh);
+  if(cur)cur.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+function onKey(e){
+  const mode=state.mode;
+  if(mode!=='en'&&mode!=='code'&&mode!=='finger')return;
+  /* 指法模式：先记下按的是哪一侧 Shift，等字母键来时判断用得对不对 */
+  if(mode==='finger'&&e.key==='Shift'){
+    FG.shiftSide=e.code==='ShiftLeft'?'left':e.code==='ShiftRight'?'right':null;
+    return;
+  }
+  if(e.key==='Backspace'){
+    e.preventDefault();
+    if(mode==='finger'&&FG)FG.backspaces++;
+    if(EN.bad.has(EN.pos)){      /* 当前光标位置刚打错 → 清除错误，原地重打 */
+      EN.bad.delete(EN.pos);
+    } else if(EN.pos>0){         /* 否则回退一格 */
+      EN.pos--;
+      EN.bad.delete(EN.pos);
+    }
+    updateEN();
+    return;
+  }
+  if(/^F\d{1,2}$/.test(e.key)){e.preventDefault();return}
+  if(e.key==='Enter'||e.key==='NumpadEnter'){e.preventDefault();return}
+  /* 按下第一个字符时才开始计时 */
+  beginTiming();
+  const typed=e.key;
+  if(typed.length!==1){return}
+  e.preventDefault();
+  const correct=typed===EN.target[EN.pos];
+  if(mode==='finger')fingerTrack(typed,correct);
+  if(correct){
+    EN.ok++;EN.pos++;
+    if(EN.pos>=EN.target.length){finishPractice();return}
+  }else{
+    EN.err++;
+    EN.bad.add(EN.pos);
+    const kf=keyForChar(EN.target[EN.pos]);
+    kbShake(kf.k);
+  }
+  updateEN();
+}
+/* ================= 中文练习（拼音输入法实时比对） ================= */
+function buildPinyinMap(){
+  CN.pinyinMap=[];
+  CN.units.forEach((u,unitIndex)=>{
+    const w=u[0],p=u[1];
+    const pyParts=p.split(' ');
+    const whole=(pyParts.length===w.length)?null:p; /* 音节数与字数不一致（如标点）→ 显示完整拼音 */
+    [...w].forEach((c,i)=>{
+      CN.pinyinMap.push({ch:c,py:whole?whole:pyParts[i]});
+    });
+    if(CN.spaced&&unitIndex<CN.units.length-1)CN.pinyinMap.push({ch:' ',py:' '});
+  });
+}
+function pinyinForPos(i){return CN.pinyinMap[i]?CN.pinyinMap[i].py:'?'}
+function renderCN(){
+  let gi=0;
+  const chars=CN.target.split('').map(c=>{
+    const g=gi++;
+    const cls='ch'+(c===' '?' space':'');
+    return '<span class="'+cls+'" data-gi="'+g+'" data-c="'+esc(c)+'">'+(c===' '?'&nbsp;':esc(c))+'</span>';
+  }).join('');
+  $('#pracText').innerHTML='<div class="row">'+chars+'</div>';
+}
+function updateCN(){
+  const t=CN.target;
+  const els=$$('#pracText .ch');
+  els.forEach(el=>{
+    const i=Number(el.dataset.gi);
+    el.classList.remove('done','cur','bad');
+    if(i<CN.pos)el.classList.add('done');
+    else if(i===CN.pos)el.classList.add('cur');
+    else if(CN.bad.has(i))el.classList.add('bad');
+  });
+  $('#pracProgress').style.width=(t.length?(CN.pos/t.length*100):0)+'%';
+  updateMeters();
+  if(CN.pos<t.length){
+    const py=pinyinForPos(CN.pos);
+    $('#pracHint').textContent='拼音：'+py;
+    const first=py.split(' ')[0]||'';
+    const cur=$('#pracText .cur');
+    kbShowTarget(cur&&Number(cur.dataset.gi)===CN.pos?(first[0]||undefined):undefined);
+  }else{
+    $('#pracHint').textContent='';
+    kbShowTarget(undefined);
+  }
+  const cur=$('#pracText .cur');
+  if(cur)cur.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+function applyCnInput(){
+  if(state.mode!=='cn')return;
+  const inp=$('#cnInput');
+  const v=inp.value;
+  const t=CN.target;
+  /* 输入第一个字时才启动计时（输入法组字阶段不算） */
+  if(v.length)beginTiming();
+  let cur=0;
+  while(cur<v.length&&cur<t.length&&v[cur]===t[cur])cur++;
+  if(v.length>t.length){
+    // 输入比目标长：回退一格并标红，等孩子退格删掉
+    const at=Math.max(0,t.length-1);
+    if(!CN.bad.has(at))CN.errCount++;
+    CN.bad=new Set([at]);
+    CN.pos=at;
+  }else if(cur<v.length&&cur<t.length){
+    // 第一个错字：只标红这一处提示修正，不把后面所有字都标红
+    if(!CN.bad.has(cur))CN.errCount++;
+    CN.bad=new Set([cur]);
+    CN.pos=cur;
+  }else{
+    CN.bad=new Set();
+    CN.pos=cur;
+  }
+  updateCN();
+  inp.scrollLeft=inp.scrollWidth;
+  if(CN.pos>=t.length&&v.length>=t.length){finishPractice();return}
+}
+function onCnInput(){
+  if(state.mode!=='cn')return;
+  if(CN.composing)return; /* 输入法拼音上屏过程中不比对，避免拼音字母被标红 */
+  applyCnInput();
+}
+/* ================= 实时统计 ================= */
+function updateMeters(){
+  const mode=state.mode;
+  const sec=elapsedSec();
+  /* 指法练习看的是「稳不稳、准不准」，所以不显示速度，改显示指法分和连击 */
+  if(mode==='finger'){
+    const fs=fingerScore();
+    $('#pracMeters').innerHTML=
+      '<span class="meter">指法分 <b>'+(fs.ready?fs.score:0)+'</b></span>'+
+      '<span class="meter'+(fs.acc<85?' err':'')+'">正确率 <b>'+fs.acc+'%</b></span>'+
+      '<span class="meter">连击 <b>'+(FG?FG.bestCombo:0)+'</b></span>'+
+      '<span class="meter">用时 <b>'+sec.toFixed(1)+'s</b></span>';
+    return;
+  }
+  const min=sec/60;          /* elapsedSec() 返回秒，换算成分钟才能得到 字符/分钟 */
+  let done=0,ok=0,err=0,isEn=true;
+  const isCode=mode==='code';
+  if(mode==='en'||isCode){done=EN.pos;ok=EN.ok;err=EN.err;isEn=mode==='en'}
+  else if(mode==='cn'){done=CN.pos;ok=CN.pos;err=CN.errCount;isEn=false}
+  const speed=min>0?done/min:0;
+  const acc=(ok+err)>0?Math.round(ok/(ok+err)*100):100;
+  $('#pracMeters').innerHTML=
+    '<span class="meter">速度 <b>'+speed.toFixed(1)+' '+(isEn?'英文字符/分':isCode?'代码字符/分':'中文字符/分')+'</b></span>'+ 
+    '<span class="meter'+(acc<90?' err':'')+'">正确率 <b>'+acc+'%</b></span>'+
+    '<span class="meter">用时 <b>'+sec.toFixed(1)+'s</b></span>';
+}
+/* ================= 完成与成绩 ================= */
+function finishPractice(){
+  const mode=state.mode;
+  const dur=elapsedSec();
+  stopTiming();
+  /* 指法练习单独计分：指法分 / 称号 / 分解反馈，不参与速度档位与彩蛋 */
+  if(mode==='finger'){
+    const fs=fingerScore();
+    const stars=fs.score>=92?3:fs.score>=82?2:fs.score>=65?1:0;
+    const prev=(HIST[CUR]||[]).filter(r=>r.cat==='finger').slice(-1)[0]||null;
+    const rec={t:Date.now(),cat:'finger',level:state.pick.level,
+      score:fs.score,acc:fs.acc,rhythm:fs.rhythm,shift:fs.shift,
+      accPts:fs.accPts,unit:'score',dur:Math.round(dur),
+      chars:EN.pos,errs:EN.err,backspaces:FG.backspaces,combo:FG.bestCombo,
+      avgKey:FG.firstTotal?Math.round(dur*1000/FG.firstTotal):0,
+      stars:stars,prevScore:prev?prev.score:null};
+    if(!HIST[CUR])HIST[CUR]=[];
+    HIST[CUR].push(rec);
+    if(HIST[CUR].length>300)HIST[CUR]=HIST[CUR].slice(-300);
+    save(LS_HIST,HIST);
+    state.mode=null;state.start=0;
+    renderResult(rec);
+    showPage('page-result');
+    if(stars>=2)confetti();
+    return;
+  }
+  let speed=0,acc=0,chars=0,errs=0,isEn=mode==='en',isCode=mode==='code';
+  if(mode==='en'||isCode){
+    chars=EN.pos;errs=EN.err;
+    speed=Math.round(chars/(dur/60));
+    acc=EN.ok/(EN.ok+EN.err)*100;
+  }else{
+    chars=CN.pos;errs=CN.errCount;
+    speed=Math.round(chars/(dur/60));
+    acc=CN.pos/(CN.pos+CN.errCount)*100;
+  }
+  if(!isFinite(speed))speed=0;
+  acc=Math.min(100,Math.max(0,Math.round(acc)));
+  const stars=acc>=95?3:acc>=85?2:acc>=60?1:0;
+  const rec={t:Date.now(),cat:state.pick.cat,level:state.pick.level,
+    wpm:speed,unit:isEn?'wpm':'cpm',acc:acc,dur:Math.round(dur),chars:chars,errs:errs,stars:stars};
+  /* 触发彩蛋的成绩不写入历史，也不进成绩图表 —— 纯粹作为彩蛋 */
+  const egg=(!isCode&&(isEn||state.pick.cat.indexOf('cn')===0))
+    ? easterEggFor(speed,isEn) : null;
+  rec.isEgg=!!egg;
+  if(!egg){
+    if(!HIST[CUR])HIST[CUR]=[];
+    HIST[CUR].push(rec);
+    if(HIST[CUR].length>300)HIST[CUR]=HIST[CUR].slice(-300);
+    save(LS_HIST,HIST);
+  }
+  state.mode=null;state.start=0;
+  renderResult(rec);
+  showPage('page-result');
+  if(stars>=2||egg)confetti();
+}
+function renderResult(rec){
+  const starStr=rec.stars===3?'⭐⭐⭐':rec.stars===2?'⭐⭐':rec.stars===1?'⭐':'💪';
+  $('#resultStars').textContent=starStr;
+  /* 指法练习：称号替换速度档位，并展开三项得分分解 */
+  if(rec.cat==='finger'){
+    const title=fingerTitle(rec.score);
+    $('#resultTierIcon').textContent=title.icon;
+    $('#resultTierName').textContent=title.name;
+    $('#resultTitle').textContent='指法练习 · 完成！';
+    $('#resultStats').innerHTML=
+      '<div class="stat-cell"><div class="v">'+rec.score+'</div><div class="k">指法分</div></div>'+
+      '<div class="stat-cell"><div class="v">'+rec.acc+'%</div><div class="k">正确率</div></div>'+
+      '<div class="stat-cell"><div class="v">'+(rec.avgKey||0)+'ms</div><div class="k">平均每键</div></div>'+
+      '<div class="stat-cell"><div class="v">'+(rec.combo||0)+'</div><div class="k">最长连击</div></div>';
+    $('#fingerBreakdown').hidden=false;
+    $('#fingerBreakdown').innerHTML=
+      '<div class="fb-row"><span>击键正确率</span><i>满分 60</i><b>'+rec.accPts+'</b></div>'+
+      '<div class="fb-row"><span>节奏稳定度</span><i>满分 25</i><b>'+rec.rhythm+'</b></div>'+
+      '<div class="fb-row"><span>Shift 规范度</span><i>满分 15</i><b>'+rec.shift+'</b></div>';
+    $('#resultNext').textContent=fingerNextText(rec);
+    $('#resultMsg').textContent=fingerFeedback(rec);
+    $('#page-result').classList.add('finger');
+    $('#page-result').classList.remove('egg');
+    return;
+  }
+  $('#fingerBreakdown').hidden=true;
+  $('#page-result').classList.remove('finger');
+  const isEn=rec.cat.indexOf('en')===0;
+  const isCode=rec.cat==='py_code';
+  const isLang=isEn||rec.cat.indexOf('cn')===0;
+  const egg=isLang?easterEggFor(rec.wpm,isEn):null;
+  /* 大图标对应速度档位；代码练习没有档位，用程序猿图标。
+     触发彩蛋时改成彩蛋图标与名称。 */
+  $('#resultTierIcon').textContent=egg?egg.icon:(isLang?speedTierIcon(rec.wpm,isEn):'🐍');
+  $('#resultTierName').textContent=egg?egg.name:(isLang?speedTierLabel(rec.wpm,isEn):'代码小达人');
+  $('#resultTitle').textContent=egg?egg.title:(CATS[rec.cat].name+' · 完成！');
+  $('#resultStats').innerHTML=
+    '<div class="stat-cell"><div class="v">'+rec.wpm+'</div><div class="k">'+(isEn?'英文字符/分':isCode?'代码字符/分':'中文字符/分')+'</div></div>'+ 
+    '<div class="stat-cell"><div class="v">'+rec.acc+'%</div><div class="k">正确率</div></div>'+
+    '<div class="stat-cell"><div class="v">'+rec.dur+'s</div><div class="k">用时</div></div>';
+  if(egg){
+    $('#resultNext').textContent='隐藏成就解锁 · 本次成绩不计入排行榜';
+    $('#resultMsg').textContent=egg.text;
+    $('#page-result').classList.add('egg');
+    return;
+  }
+  $('#page-result').classList.remove('egg');
+  $('#resultNext').textContent=isLang
+    ? nextSpeedLabel(rec.wpm,isEn)
+    : '下一档：继续练习，写出更长的代码';
+  let msg=speedFeedback(rec.wpm,isEn);
+  if(rec.acc<70)msg='先把准确率稳住。'+msg;
+  else if(rec.acc<85)msg='方向是对的，少错一些就会更快。'+msg;
+  else if(rec.stars===3)msg='全对小英雄！'+msg;
+  else if(rec.stars===2)msg='准确率很不错，再练几次就能更上一层。'+msg;
+  $('#resultMsg').textContent=msg;
+}
+/* 指法结果页：下一目标 + 数据化的正向鼓励 */
+function fingerNextText(rec){
+  const cur=fingerTitle(rec.score);
+  const idx=FINGER_TITLES.indexOf(cur);
+  let head='';
+  if(typeof rec.prevScore==='number'){
+    const d=rec.score-rec.prevScore;
+    head=d>0?('比上一局 +'+d+' 分 · '):d<0?('比上一局 '+d+' 分 · '):'和上一局一样稳 · ';
+  }
+  if(idx>0){
+    const next=FINGER_TITLES[idx-1];
+    return head+'距离「'+next.name+'」还差 '+(next.min-rec.score)+' 分';
+  }
+  return head+'已经是最高称号，稳住这个水平！';
+}
+function fingerFeedback(rec){
+  const parts=[];
+  if(rec.backspaces===0)parts.push('整局一次都没回退，手指很笃定。');
+  else parts.push('只回退 '+rec.backspaces+' 次，比乱打快多了。');
+  if(rec.accPts>=58)parts.push('正确率几乎满分。');
+  else if(rec.accPts<48)parts.push('把速度放慢一点，先保证每一下都按对。');
+  if(rec.rhythm>=23)parts.push('节奏特别稳。');
+  else if(rec.rhythm<16)parts.push('手指回到定位键再出发，节奏会更均匀。');
+  if(rec.level===6){
+    if(rec.shift>=14)parts.push('Shift 用得很规范。');
+    else parts.push('记住：大写要用另一只手的小指按住 Shift。');
+  }
+  if(rec.combo>=40)parts.push('最长连击 '+rec.combo+' 个键，很了不起！');
+  return parts.join('');
+}
+/* 撒花 */
+function confetti(){
+  const colors=['#5b6cff','#ff7aa2','#ffd166','#06d6a0','#ff4d6d','#0abde3'];
+  for(let i=0;i<42;i++){
+    const d=document.createElement('div');d.className='confetti';
+    d.style.left=Math.random()*100+'vw';
+    d.style.background=colors[i%colors.length];
+    d.style.animationDuration=(1.2+Math.random()*1.3)+'s';
+    d.style.animationDelay=(Math.random()*0.5)+'s';
+    d.style.width=(7+Math.random()*7)+'px';
+    d.style.height=(7+Math.random()*7)+'px';
+    document.body.appendChild(d);
+    setTimeout(()=>d.remove(),3200);
+  }
+}
+/* ================= 我的成绩 ================= */
+let statsFilter='all';
+let statsDay='';            /* 明细当前选中的日期，空=自动选最近一天 */
+function dayKey(t){const d=new Date(t);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function fmtDayLabel(key){
+  const p=key.split('-');
+  const today=dayKey(Date.now());
+  if(key===today)return '今天 · '+(+p[1])+'/'+(+p[2]);
+  return p[0]+'/'+(+p[1])+'/'+(+p[2]);
+}
+function fmtClock(t){const d=new Date(t);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+/* 指法练习用「指法分」而不是速度，明细与图表通过这两个函数统一取值 */
+function recordValue(r){return r.cat==='finger'?r.score:r.wpm}
+function recordUnit(r){return r.cat==='finger'?'指法分':r.cat.indexOf('en')===0?'英文字符/分':r.cat==='py_code'?'代码字符/分':'中文字符/分'}
+/* 严格按天聚合，同一天多次练习取平均值 */
+function dailyAvg(recs){
+  const map=new Map();
+  recs.forEach(r=>{
+    const k=dayKey(r.t);
+    if(!map.has(k))map.set(k,{key:k,t:r.t,sum:0,n:0,accSum:0,pts:0});
+    const d=map.get(k);
+    d.sum+=r.wpm;d.n++;d.accSum+=r.acc;d.pts+=r.stars;
+    if(r.t<d.t)d.t=r.t;
+  });
+  return [...map.values()].sort((a,b)=>a.key<b.key?-1:1).map(d=>({
+    key:d.key,t:d.t,avg:Math.round(d.sum/d.n),n:d.n,acc:Math.round(d.accSum/d.n),pts:d.pts
+  }));
+}
+function renderStats(){
+  const list=(HIST[CUR]||[]).slice();
+  const flt=statsFilter==='all'?list:list.filter(r=>r.cat===statsFilter);
+  const chips='<button class="chip'+(statsFilter==='all'?' on':'')+'" data-f="all">全部</button>'+
+    CAT_ORDER.map(c=>'<button class="chip'+(statsFilter===c?' on':'')+'" data-f="'+c+'">'+CATS[c].emoji+' '+CATS[c].name+'</button>').join('');
+  $('#statsChips').innerHTML=chips;
+  $$('#statsChips .chip').forEach(c=>{c.onclick=()=>{statsFilter=c.dataset.f;statsDay='';renderStats()}});
+  if(!flt.length){
+    $('#statsCards').innerHTML='<div class="chart-empty">还没有成绩，先去练一次吧！💪</div>';
+    $('#statsBoxEn').hidden=statsFilter==='finger';
+    $('#statsBoxCn').hidden=statsFilter==='finger';
+    $('#statsBoxFinger').hidden=statsFilter!=='finger';
+    drawLineChart('#statsChartEn',[],'#5b6cff','en');
+    drawLineChart('#statsChartCn',[],'#ff7aa2','cn');
+    drawRunChart('#statsChartFinger',[],'#e08b3c','指法',recordValue);
+    renderDetail([]);
+    return;
+  }
+  const enFlt=flt.filter(r=>r.cat.indexOf('en')===0);
+  const cnFlt=flt.filter(r=>r.cat.indexOf('cn')===0);
+  const fingerFlt=flt.filter(r=>r.cat==='finger');
+  const bestEn=enFlt.length?enFlt.reduce((m,r)=>r.wpm>m.wpm?r:m,enFlt[0]):null;
+  const bestCn=cnFlt.length?cnFlt.reduce((m,r)=>r.wpm>m.wpm?r:m,cnFlt[0]):null;
+  const bestFinger=fingerFlt.length?fingerFlt.reduce((m,r)=>r.score>m.score?r:m,fingerFlt[0]):null;
+  const avgAcc=Math.round(flt.reduce((s,r)=>s+r.acc,0)/flt.length);
+  const totalStars=flt.reduce((s,r)=>s+r.stars,0);
+  const cards=[];
+  if(bestEn)cards.push('<div class="mini-card"><div class="mv">'+bestEn.wpm+'</div><div class="mk">最快 英文/分</div></div>');
+  if(bestCn)cards.push('<div class="mini-card"><div class="mv">'+bestCn.wpm+'</div><div class="mk">最快 中文/分</div></div>');
+  if(bestFinger)cards.push('<div class="mini-card"><div class="mv">'+bestFinger.score+'</div><div class="mk">最高指法分</div></div>');
+  cards.push('<div class="mini-card"><div class="mv">'+avgAcc+'%</div><div class="mk">平均正确率</div></div>');
+  cards.push('<div class="mini-card"><div class="mv">'+flt.length+'</div><div class="mk">练习次数</div></div>');
+  cards.push('<div class="mini-card"><div class="mv">'+totalStars+' ⭐</div><div class="mk">获得星星</div></div>');
+  $('#statsCards').innerHTML=cards.join('');
+  /* 指法分和速度是两种量纲，用筛选切换显示哪一组图，避免混淆 */
+  const showFinger=statsFilter==='finger';
+  $('#statsBoxEn').hidden=showFinger;
+  $('#statsBoxCn').hidden=showFinger;
+  $('#statsBoxFinger').hidden=!showFinger;
+  drawLineChart('#statsChartEn',dailyAvg(enFlt),'#5b6cff','en');
+  drawLineChart('#statsChartCn',dailyAvg(cnFlt),'#ff7aa2','cn');
+  drawRunChart('#statsChartFinger',fingerFlt,'#e08b3c','指法',recordValue);
+  renderDetail(flt);
+}
+/* 单条折线图：横轴严格按天，纵轴为当天平均速度 */
+function drawLineChart(sel,days,color,unit){
+  const svg=$(sel);
+  if(!svg)return;
+  const W=640,H=240,padL=52,padR=18,padT=20,padB=38;
+  if(!days.length){
+    svg.innerHTML='<text x="'+(W/2)+'" y="'+(H/2)+'" text-anchor="middle" fill="#8a90ab" font-size="15" font-family="Microsoft YaHei">还没有这类练习记录</text>';
+    return;
+  }
+  const vals=days.map(d=>d.avg);
+  const mx=Math.max(10,...vals)*1.15;
+  const n=days.length;
+  const inner=W-padL-padR;
+  const X=i=>n===1?padL+inner/2:padL+i*inner/(n-1);
+  const Y=v=>padT+(1-v/mx)*(H-padT-padB);
+  let grid='';
+  for(let g=0;g<=4;g++){
+    const gy=padT+g*(H-padT-padB)/4;
+    const gv=Math.round(mx*(1-g/4));
+    grid+='<line x1="'+padL+'" y1="'+gy+'" x2="'+(W-padR)+'" y2="'+gy+'" stroke="#eef0fa" stroke-width="1"/>'+
+          '<text x="'+(padL-8)+'" y="'+(gy+5)+'" text-anchor="end" fill="#b0b5d0" font-size="11" font-family="Microsoft YaHei">'+gv+'</text>';
+  }
+  /* 天数多时抽稀横轴标签，避免重叠 */
+  const step=n<=8?1:Math.ceil(n/8);
+  let labels='',circles='';
+  days.forEach((d,i)=>{
+    if(i%step===0||i===n-1){
+      labels+='<text x="'+X(i)+'" y="'+(H-padB+18)+'" text-anchor="middle" fill="#b0b5d0" font-size="10" font-family="Microsoft YaHei">'+
+        (d.key.slice(5).replace('-','/'))+'</text>';
+    }
+    circles+='<circle cx="'+X(i)+'" cy="'+Y(d.avg)+'" r="4" fill="'+color+'">'+
+      '<title>'+d.key+' · 平均 '+d.avg+' 字符/分 · '+d.n+' 次 · 正确率'+d.acc+'%</title></circle>';
+  });
+  const pts=days.map((d,i)=>X(i)+','+Y(d.avg));
+  svg.innerHTML=grid+
+    '<polyline points="'+pts.join(' ')+'" fill="none" stroke="'+color+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'+
+    circles+labels;
+}
+/* 明细折线图：横轴是当天第几次练习（按时间先后），纵轴是这一次的速度/指法分。
+   和上面的“按天平均”图互补 —— 一天打很多次时，这张能看出当天的起伏。
+   valFn 让指法练习可以画「指法分」而不是速度。 */
+function drawRunChart(sel,runs,color,unit,valFn){
+  const get=valFn||(r=>r.wpm);
+  const svg=$(sel);
+  if(!svg)return;
+  const W=640,H=180,padL=52,padR=18,padT=18,padB=34;
+  if(!runs.length){
+    svg.innerHTML='<text x="'+(W/2)+'" y="'+(H/2)+'" text-anchor="middle" fill="#8a90ab" font-size="14" font-family="Microsoft YaHei">'+unit+'当天没有练习记录</text>';
+    return;
+  }
+  const list=runs.slice().sort((a,b)=>a.t-b.t);
+  const vals=list.map(get);
+  const mx=Math.max(10,...vals)*1.15;
+  const n=list.length;
+  const inner=W-padL-padR;
+  const X=i=>n===1?padL+inner/2:padL+i*inner/(n-1);
+  const Y=v=>padT+(1-v/mx)*(H-padT-padB);
+  let grid='';
+  for(let g=0;g<=3;g++){
+    const gy=padT+g*(H-padT-padB)/3;
+    const gv=Math.round(mx*(1-g/3));
+    grid+='<line x1="'+padL+'" y1="'+gy+'" x2="'+(W-padR)+'" y2="'+gy+'" stroke="#eef0fa" stroke-width="1"/>'+
+          '<text x="'+(padL-8)+'" y="'+(gy+5)+'" text-anchor="end" fill="#b0b5d0" font-size="11" font-family="Microsoft YaHei">'+gv+'</text>';
+  }
+  /* 次数多时抽稀横轴标签，只在整点附近标注 */
+  const step=n<=8?1:Math.ceil(n/8);
+  let labels='',circles='';
+  list.forEach((r,i)=>{
+    const v=get(r);
+    if(i%step===0||i===n-1){
+      labels+='<text x="'+X(i)+'" y="'+(H-padB+18)+'" text-anchor="middle" fill="#b0b5d0" font-size="10" font-family="Microsoft YaHei">'+
+        fmtClock(r.t)+'</text>';
+    }
+    circles+='<circle cx="'+X(i)+'" cy="'+Y(v)+'" r="4" fill="'+color+'">'+
+      '<title>'+fmtClock(r.t)+' · '+CATS[r.cat].name+' · '+v+' '+unit+(r.cat==='finger'?' 分':' 字符/分')+' · 正确率'+r.acc+'%</title></circle>';
+  });
+  const pts=list.map((r,i)=>X(i)+','+Y(get(r)));
+  svg.innerHTML=grid+
+    '<polyline points="'+pts.join(' ')+'" fill="none" stroke="'+color+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'+
+    circles+labels;
+}
+/* 明细表：默认显示最近一天，可切换日期 */
+function renderDetail(recs){
+  const sel=$('#statsDay');
+  const tbody=$('#statsDetail');
+  if(!recs.length){
+    sel.innerHTML='';
+    sel.disabled=true;
+    tbody.innerHTML='<tr><td colspan="4" class="detail-empty">这一天还没有练习记录</td></tr>';
+    drawRunChart('#detailChartEn',[],'#5b6cff','英文');
+    drawRunChart('#detailChartCn',[],'#ff7aa2','中文');
+    drawRunChart('#detailChartFinger',[],'#e08b3c','指法',recordValue);
+    $('#detailBoxFinger').hidden=true;
+    $('#detailBoxEn').hidden=statsFilter==='finger';
+    $('#detailBoxCn').hidden=statsFilter==='finger';
+    return;
+  }
+  sel.disabled=false;
+  const keys=[...new Set(recs.map(r=>dayKey(r.t)))].sort().reverse();
+  if(!statsDay||keys.indexOf(statsDay)<0)statsDay=keys[0];
+  sel.innerHTML=keys.map(k=>'<option value="'+k+'">'+fmtDayLabel(k)+'</option>').join('');
+  sel.value=statsDay;
+  const dayRuns=recs.filter(r=>dayKey(r.t)===statsDay);
+  /* 明细折线图：按语言拆开，各自画当天每一次练习；指法单独一张 */
+  const dayFinger=dayRuns.filter(r=>r.cat==='finger');
+  drawRunChart('#detailChartEn',dayRuns.filter(r=>r.cat.indexOf('en')===0),'#5b6cff','英文');
+  drawRunChart('#detailChartCn',dayRuns.filter(r=>r.cat.indexOf('cn')===0),'#ff7aa2','中文');
+  drawRunChart('#detailChartFinger',dayFinger,'#e08b3c','指法',recordValue);
+  $('#detailBoxFinger').hidden=!dayFinger.length;
+  $('#detailBoxEn').hidden=statsFilter==='finger';
+  $('#detailBoxCn').hidden=statsFilter==='finger';
+  const rows=dayRuns.slice().sort((a,b)=>b.t-a.t);
+  if(!rows.length){
+    tbody.innerHTML='<tr><td colspan="4" class="detail-empty">这一天还没有练习记录</td></tr>';
+    return;
+  }
+  tbody.innerHTML=rows.map(r=>{
+    return '<tr>'+
+      '<td>'+fmtClock(r.t)+'</td>'+
+      '<td>'+CATS[r.cat].emoji+' '+CATS[r.cat].name+'</td>'+
+      '<td class="td-speed">'+recordValue(r)+' <span style="font-weight:400;color:var(--muted)">'+recordUnit(r)+'</span></td>'+
+      '<td class="td-acc'+(r.acc<85?' warn':'')+'">'+r.acc+'%</td>'+
+    '</tr>';
+  }).join('');
+}
+/* ================= 羽毛球游戏模式 =================
+   核心机制：球的飞行高度 = 剩余打字时间预算。
+   打完的瞬间立即击球，球还在高处被击中就是杀球 —— 所以“快”直接等于“进攻机会”。
+   失误只丢一分，不结束、不重启。节奏由孩子自己的完成动作驱动，不存在打完干等。 */
+const LS_GAME='typekid_badminton_v1';
+const GAME_CFG={
+  perCharInit:3000,    /* 初始每字符耗时，对应约 20 字符/分钟 */
+  perCharMin:220,      /* 速度上限保护 */
+  perCharMax:5000,     /* 速度下限保护 */
+  emaAlpha:0.3,        /* 自适应跟随强度 */
+  buffer:1.6,          /* 时间预算冗余 */
+  budgetMinMs:4000,
+  budgetMaxMs:25000,
+  smashRemain:0.45,    /* 剩余时间比例 > 此值 → 杀球（约比自己的平均速度快 1.25 倍） */
+  driveRemain:0.20,    /* 剩余时间比例 > 此值 → 平抽，否则挑高 */
+  feedMs:520,          /* 发球飞行 */
+  returnMs:260,        /* 击球后飞回（默认，各球种会覆盖） */
+  nextDelayMs:520,     /* 球与球之间的节奏间隙 */
+  missMs:340           /* 落地动画 */
+};
+/* 三个难度：调节局时长、词库深度、时间冗余、连击升级门槛。
+   核心的自适应速度不变 —— 难度只决定“给多少余量”和“词有多长”。
+   星级门槛随局时长缩放，保证三档拿满星的难度相当。 */
+const GAME_DIFF={
+  easy:{key:'easy',name:'简单',icon:'🌱',stars:'⭐',roundMs:60000,starCuts:[11,6,3],
+        desc:'60 秒 · 球飞得慢，给足时间，先从短词开始',
+        perCharInit:3000,buffer:1.65,poolBase:1,poolMax:3,levelUp:[3,7,12]},
+  medium:{key:'medium',name:'中等',icon:'🌿',stars:'⭐⭐',roundMs:90000,starCuts:[17,9,4],
+        desc:'90 秒 · 速度正常，词更长，容错小一些',
+        perCharInit:2200,buffer:1.40,poolBase:2,poolMax:4,levelUp:[4,9,15]},
+  hard:{key:'hard',name:'困难',icon:'🔥',stars:'⭐⭐⭐',roundMs:120000,starCuts:[22,12,5],
+        desc:'120 秒 · 球飞得快，容错很小，专挑长单词',
+        perCharInit:1500,buffer:1.18,poolBase:3,poolMax:4,levelUp:[5,11,18]}
+};
+/* 四种击球的动画参数：轨迹、时长、强度各不相同 */
+const HIT_FX={
+  smash:{dur:190, sway:4,   rise:0,  shake:3.4, flash:1.0, particles:26, spread:2.8, label:'杀球 SMASH +2', color:'#ffd166', pts:2, swing:1.0},
+  drive:{dur:250, sway:2,   rise:8,  shake:1.1, flash:0.25,particles:14, spread:1.9, label:'平抽 DRIVE +1', color:'#9fe6ff', pts:1, swing:0.6},
+  lift:{ dur:560, sway:0,   rise:52, shake:0,   flash:0,   particles:8,  spread:1.5, label:'挑高 LIFT +1', color:'#c9cdf0', pts:1, swing:0.35},
+  miss:{ dur:340, sway:5,   rise:0,  shake:2.1, flash:0.3, particles:16, spread:2.2, label:'漏球', color:'#ff6b6b', pts:0, swing:0}
+};
+const GW=320,GH=180;
+const COURT={floorY:150,netX:160,netTop:108,leftX:68,rightX:252,hangX:146,hangY:44,serveX:250,serveY:78};
+const lerp=(a,b,t)=>a+(b-a)*t;
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const CROWD_COLORS=['#3b4a78','#4a5c8f','#6a4a78','#3f6b6b','#7a5a3f','#5a3f6b'];
+const CROWD=[];
+for(let i=0;i<200;i++)CROWD.push({x:rand(GW),y:rand(34),c:CROWD_COLORS[rand(CROWD_COLORS.length)]});
+
+const gameKB=createKeyboard($('#gameKb'));
+const gcanvas=$('#gameCanvas');
+const gctx=gcanvas.getContext('2d');
+gctx.imageSmoothingEnabled=false;
+
+let G=null,gRaf=null,audioCtx=null;
+function gameBeep(freq,dur,vol,type){
+  try{
+    if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended')audioCtx.resume();
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.type=type||'square';
+    o.frequency.setValueAtTime(freq,audioCtx.currentTime);
+    o.connect(g);g.connect(audioCtx.destination);
+    g.gain.setValueAtTime(vol||0.05,audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+dur);
+    o.start();o.stop(audioCtx.currentTime+dur);
+  }catch(e){}
+}
+function sfxKey(combo){gameBeep(520+Math.min(9,combo)*40,0.02,0.025)}
+function sfxHit(){gameBeep(660,0.06,0.055);setTimeout(()=>gameBeep(880,0.05,0.04),40)}
+function sfxSmash(){gameBeep(180,0.16,0.09);setTimeout(()=>gameBeep(320,0.1,0.06),30)}
+function sfxLift(){gameBeep(360,0.07,0.035);setTimeout(()=>gameBeep(520,0.07,0.03),55)}
+function sfxMiss(){gameBeep(150,0.24,0.06,'sawtooth')}
+function sfxFeed(){gameBeep(420,0.04,0.03)}
+
+/* 成绩按“用户 + 难度”分开保存；旧记录（无难度）视为简单档，保证兼容 */
+function loadGameBest(){
+  try{
+    const all=JSON.parse(localStorage.getItem(LS_GAME)||'{}');
+    const u=all[CUR||'guest'];
+    if(!u)return null;
+    if(typeof u.catches==='number')return G.gameDiff==='easy'||!G.gameDiff?u:null;
+    return u[G.gameDiff]||null;
+  }catch(e){return null}
+}
+function saveGameBest(rec){
+  try{
+    const all=JSON.parse(localStorage.getItem(LS_GAME)||'{}');
+    const key=CUR||'guest';
+    let u=all[key];
+    if(!u||typeof u.catches==='number')u={};
+    u[G.gameDiff]=rec;
+    all[key]=u;
+    localStorage.setItem(LS_GAME,JSON.stringify(all));
+  }catch(e){}
+}
+function loadAllGameBest(){
+  try{
+    const all=JSON.parse(localStorage.getItem(LS_GAME)||'{}');
+    const u=all[CUR||'guest'];
+    if(!u)return {};
+    if(typeof u.catches==='number')return {easy:u};
+    return u;
+  }catch(e){return {}}
+}
+
+function gameLevel(){
+  const up=G.diff.levelUp,c=G.combo;
+  let lv=1;
+  if(c>=up[2])lv=4;else if(c>=up[1])lv=3;else if(c>=up[0])lv=2;
+  /* 词库深度还受难度下限约束 */
+  return clamp(Math.max(lv,G.diff.poolBase),1,G.diff.poolMax);
+}
+/* 抽词：优先从当前等级的词堆里抽，抽过的词本局不再出现；
+   某一级用尽后自动扩展到相邻等级，因此一局可用的词量是整份词库（248 个），
+   远超一局实际能接到的球数 —— 同一局内不会重复。 */
+function drawGameWord(level){
+  const order=[level];
+  for(let l=G.diff.poolBase;l<=G.diff.poolMax;l++)if(order.indexOf(l)<0)order.push(l);
+  /* 兜底：当前难度对应的等级全用尽时，才动用其余等级的剩余词 */
+  for(let l=1;l<=4;l++)if(order.indexOf(l)<0)order.push(l);
+  for(const lv of order){
+    const pool=GAME_WORDS[lv]||GAME_WORDS[1];
+    let deck=G.decks[lv];
+    if(!deck)deck=G.decks[lv]=[];
+    if(!deck.length){
+      /* 牌堆空了：只用本局没出现过的词重建 */
+      const fresh=pool.filter(w=>!G.used.has(w));
+      if(!fresh.length)continue;
+      G.decks[lv]=deck=shuffle(fresh);
+    }
+    let w=deck.pop();
+    /* 避免和上一球紧挨着相同 */
+    if(w===G.lastWord&&deck.length){
+      const alt=deck.pop();
+      deck.push(w);
+      w=alt;
+    }
+    G.used.add(w);
+    G.lastWord=w;
+    return w;
+  }
+  /* 整份词库都用尽（一局不可能发生）：重置记录，重新开始 */
+  G.used=new Set();
+  G.decks={};
+  return drawGameWord(level);
+}
+function pickGameWord(){
+  return drawGameWord(gameLevel());
+}
+function computeBudget(word){
+  return clamp(word.length*G.perChar*G.diff.buffer,GAME_CFG.budgetMinMs,GAME_CFG.budgetMaxMs);
+}
+
+function startGame(diffKey){
+  const diff=GAME_DIFF[diffKey]||GAME_DIFF.easy;
+  state.mode=null;kbClear();
+  const now=performance.now();
+  G={running:true,now:now,deadline:now+diff.roundMs,gameDiff:diff.key,diff:diff,
+     scoreMe:0,scoreOp:0,combo:0,bestCombo:0,catches:0,smashes:0,drives:0,lifts:0,
+     keysOk:0,keysBad:0,perChar:diff.perCharInit,
+     decks:{},used:new Set(),
+     word:null,pos:0,budget:1,phase:'wait',phaseStart:now,hitKind:null,
+     ball:{x:COURT.serveX,y:COURT.serveY},returnFromY:COURT.floorY-70,ballAtMiss:{x:COURT.leftX,y:COURT.floorY},
+     trail:[],particles:[],rings:[],shake:0,flash:0,swing:0,hitFx:0,lastWord:'',toastT:0};
+  $('#gName').textContent=CUR||'我';
+  $('#gScoreMe').textContent='0';
+  $('#gScoreOp').textContent='0';
+  $('#gCombo').textContent='';
+  $('#gDiffTag').innerHTML=diff.icon+' 当前难度：<b>'+diff.name+'</b>';
+  $('#gTime').textContent=String(Math.ceil(diff.roundMs/1000));
+  $('#gameWord').innerHTML='';
+  $('#gToast').classList.remove('show');
+  gameKB.clear();
+  showPage('page-game');
+  if(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches)$('#gNoKb').hidden=false;
+  cancelAnimationFrame(gRaf);
+  gRaf=requestAnimationFrame(gameTick);
+}
+function stopGame(){
+  if(G)G.running=false;
+  cancelAnimationFrame(gRaf);
+  gRaf=null;
+  gameKB.clear();
+}
+function gameTick(){
+  if(!G||!G.running)return;
+  G.now=performance.now();
+  updateGame();
+  if(!G||!G.running)return;
+  drawGame();
+  if(G.now>=G.deadline){finishGame();return}
+  gRaf=requestAnimationFrame(gameTick);
+}
+function ballPos(){
+  const el=G.now-G.phaseStart;
+  if(G.phase==='feed'){
+    const p=Math.min(1,el/GAME_CFG.feedMs);
+    return {x:lerp(COURT.serveX,COURT.hangX,p),y:lerp(COURT.serveY,COURT.hangY,p)-Math.sin(p*Math.PI)*22};
+  }
+  if(G.phase==='type'){
+    const p=Math.min(1,el/G.budget);
+    return {x:lerp(COURT.hangX,COURT.leftX,p),y:COURT.hangY+(COURT.floorY-COURT.hangY)*Math.pow(p,1.7)};
+  }
+  if(G.phase==='return'){
+    /* 每种击球有各自的飞行轨迹，动画本身就是“这球打得好不好”的反馈 */
+    const fx=HIT_FX[G.hitKind]||HIT_FX.drive;
+    const p=Math.min(1,el/fx.dur);
+    const x=lerp(COURT.leftX,COURT.serveX,p);
+    if(G.hitKind==='smash'){
+      /* 杀球：先向下砸，再贴着网快速掠过 */
+      const dip=Math.sin(Math.min(1,p*1.6)*Math.PI)*13;
+      return {x:x,y:lerp(G.returnFromY,COURT.serveY+8,p)+dip};
+    }
+    if(G.hitKind==='lift'){
+      /* 挑高：高高地飞成一道弧线 */
+      return {x:x,y:lerp(G.returnFromY,COURT.serveY,p)-Math.sin(p*Math.PI)*fx.rise};
+    }
+    /* 平抽：几乎贴着一条直线飞过去 */
+    return {x:x,y:lerp(G.returnFromY,COURT.serveY,p)-Math.sin(p*Math.PI)*fx.rise};
+  }
+  if(G.phase==='miss'){
+    /* 漏球：先落到地面，再弹一下 */
+    const fx=HIT_FX.miss;
+    const p=Math.min(1,el/fx.dur);
+    const bounce=Math.max(0,Math.sin(p*Math.PI*2.2))*5*(1-p);
+    return {x:lerp(G.ballAtMiss.x,G.ballAtMiss.x+fx.sway,p),y:lerp(G.ballAtMiss.y,COURT.floorY,p)-bounce};
+  }
+  return {x:COURT.serveX,y:COURT.serveY};
+}
+function updateGame(){
+  const t=G.now;
+  if(G.phase==='wait'){
+    if(t-G.phaseStart>=GAME_CFG.nextDelayMs)startBall();
+  }else if(G.phase==='feed'){
+    G.ball=ballPos();
+    if(t-G.phaseStart>=GAME_CFG.feedMs){
+      G.phase='type';G.phaseStart=t;G.budget=computeBudget(G.word);
+    }
+  }else if(G.phase==='type'){
+    if(t-G.phaseStart>=G.budget){doMiss();}
+    else G.ball=ballPos();
+  }else if(G.phase==='return'){
+    G.ball=ballPos();
+    if(t-G.phaseStart>=(HIT_FX[G.hitKind]||HIT_FX.drive).dur){G.phase='wait';G.phaseStart=t;}
+  }else if(G.phase==='miss'){
+    G.ball=ballPos();
+    if(t-G.phaseStart>=HIT_FX.miss.dur){G.phase='wait';G.phaseStart=t;}
+  }
+  /* 轨迹拖尾长度也跟随球速：杀球最长，挑高最短 */
+  const trailMax=G.hitKind==='smash'?14:G.hitKind==='lift'?4:8;
+  G.trail.push({x:G.ball.x,y:G.ball.y});
+  if(G.trail.length>trailMax)G.trail.shift();
+  /* 粒子与特效衰减 */
+  G.particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=0.12;p.life-=1});
+  G.particles=G.particles.filter(p=>p.life>0);
+  G.rings.forEach(r=>{r.r+=r.v;r.life-=1});
+  G.rings=G.rings.filter(r=>r.life>0);
+  if(G.shake>0)G.shake=Math.max(0,G.shake-0.35);
+  if(G.flash>0)G.flash=Math.max(0,G.flash-0.12);
+  if(G.swing>0)G.swing=Math.max(0,G.swing-0.06);
+  if(G.hitFx>0)G.hitFx=Math.max(0,G.hitFx-0.05);
+  if(G.toastT>0){G.toastT-=1;if(G.toastT<=0)$('#gToast').classList.remove('show')}
+  /* HUD */
+  $('#gTime').textContent=String(Math.max(0,Math.ceil((G.deadline-t)/1000)));
+  $('#gCombo').textContent=G.combo>=2?('连击 × '+G.combo):'';
+}
+function startBall(){
+  G.word=pickGameWord();
+  G.pos=0;G.phase='feed';G.phaseStart=G.now;
+  sfxFeed();
+  renderGameWord();
+}
+function renderGameWord(){
+  const w=G.word||'';
+  let html='';
+  for(let i=0;i<w.length;i++){
+    const cls='ch'+(w[i]===' '?' space':'');
+    html+='<span class="'+cls+'" data-i="'+i+'">'+(w[i]===' '?'&nbsp;':esc(w[i]))+'</span>';
+  }
+  $('#gameWord').innerHTML='<div class="row">'+html+'</div>';
+  paintGameWord();
+}
+function paintGameWord(){
+  $$('#gameWord .ch').forEach(el=>{
+    const i=+el.dataset.i;
+    el.classList.remove('done','cur','bad');
+    if(i<G.pos)el.classList.add('done');
+    else if(i===G.pos)el.classList.add('cur');
+  });
+  gameKB.showTarget(G.phase==='type'?G.word[G.pos]:undefined);
+}
+function gameToast(text){
+  const el=$('#gToast');
+  el.textContent=text;el.classList.add('show');G.toastT=10;
+}
+function burst(x,y,color,n,spread,dirBias){
+  for(let i=0;i<n;i++){
+    const a=Math.random()*Math.PI*2,s=Math.random()*spread;
+    let vx=Math.cos(a)*s, vy=Math.sin(a)*s-0.6;
+    if(dirBias){vx=vx*0.55+dirBias*0.75;vy*=0.75}
+    G.particles.push({x:x,y:y,vx:vx,vy:vy,life:18+rand(10),c:color});
+  }
+}
+function ring(x,y,color,v){G.rings.push({x:x,y:y,r:2,v:v||0.9,life:16,c:color})}
+/* 四种击球各自的命中表现：位置、方向、强度都不同 */
+function hitEffect(kind,x,y){
+  const fx=HIT_FX[kind];
+  if(kind==='smash'){
+    /* 杀球：从高处向下重砸，金色爆开 + 冲击环 + 强闪强震 */
+    burst(x,y,fx.color,fx.particles,fx.spread,-1.1);
+    burst(x,y,'#fff3c4',8,1.4,-0.6);
+    ring(x,y,fx.color,1.25);
+    G.shake=fx.shake;G.flash=fx.flash;sfxSmash();
+  }else if(kind==='drive'){
+    /* 平抽：横向疾飞，青色细碎火花 + 一条速度线 */
+    burst(x,y,fx.color,fx.particles,fx.spread,1.4);
+    ring(x,y,fx.color,0.7);
+    G.shake=fx.shake;G.flash=fx.flash;sfxHit();
+  }else{
+    /* 挑高：轻柔上挑，冷色小球，几乎没有震动 */
+    burst(x,y,fx.color,fx.particles,fx.spread,-0.4);
+    sfxLift();
+  }
+  G.hitFx=1;
+}
+function doHit(){
+  const elapsed=G.now-G.phaseStart;
+  const remain=1-Math.min(1,elapsed/G.budget);
+  let kind;
+  if(remain>GAME_CFG.smashRemain)kind='smash';
+  else if(remain>GAME_CFG.driveRemain)kind='drive';
+  else kind='lift';
+  const fx=HIT_FX[kind];
+  G.smashes+=kind==='smash'?1:0;
+  G.drives+=kind==='drive'?1:0;
+  G.lifts+=kind==='lift'?1:0;
+  G.scoreMe+=fx.pts;G.catches++;G.combo++;
+  if(G.combo>G.bestCombo)G.bestCombo=G.combo;
+  $('#gScoreMe').textContent=G.scoreMe;
+  /* 自适应：用真实完成速度更新每字符耗时 */
+  const perChar=elapsed/G.word.length;
+  G.perChar=clamp(G.perChar*(1-GAME_CFG.emaAlpha)+perChar*GAME_CFG.emaAlpha,GAME_CFG.perCharMin,GAME_CFG.perCharMax);
+  G.returnFromY=G.ball.y;
+  G.hitKind=kind;
+  G.phase='return';G.phaseStart=G.now;
+  G.swing=fx.swing;
+  hitEffect(kind,COURT.leftX,COURT.floorY-70);
+  gameToast(fx.label);
+  G.pos=G.word.length;
+  paintGameWord();
+}
+function doMiss(){
+  G.scoreOp++;G.combo=0;G.keysBad++;
+  $('#gScoreOp').textContent=G.scoreOp;
+  /* 失误说明预算偏紧，抬高每字符耗时，下一球会更从容 */
+  const perChar=G.budget/G.word.length;
+  G.perChar=clamp(G.perChar*(1-GAME_CFG.emaAlpha)+perChar*GAME_CFG.emaAlpha,GAME_CFG.perCharMin,GAME_CFG.perCharMax);
+  G.ballAtMiss={x:G.ball.x,y:G.ball.y};
+  G.hitKind='miss';
+  G.phase='miss';G.phaseStart=G.now;
+  G.shake=HIT_FX.miss.shake;G.flash=HIT_FX.miss.flash;
+  sfxMiss();
+  burst(G.ballAtMiss.x,COURT.floorY-4,HIT_FX.miss.color,HIT_FX.miss.particles,HIT_FX.miss.spread,0);
+  ring(G.ballAtMiss.x,COURT.floorY-2,'#ff6b6b',0.8);
+  gameToast(HIT_FX.miss.label);
+  paintGameWord();
+}
+/* --- 像素渲染 --- */
+function px(c,x,y,w,h,color){c.fillStyle=color;c.fillRect(Math.round(x),Math.round(y),w,h)}
+function drawBackground(c){
+  px(c,0,0,GW,GH,'#101a33');
+  px(c,0,0,GW,38,'#182449');
+  CROWD.forEach(d=>px(c,d.x,d.y,2,2,d.c));
+  px(c,0,38,GW,5,'#22305c');
+}
+function drawCourt(c){
+  px(c,0,COURT.floorY,GW,GH-COURT.floorY,'#2f7a4a');
+  px(c,0,COURT.floorY,GW,5,'#3f9a5c');
+  px(c,0,COURT.floorY+5,GW,1,'#255f39');
+  px(c,COURT.netX-92,COURT.floorY+15,184,1,'#255f39');
+  /* 球网网格 */
+  const nh=COURT.floorY-COURT.netTop;
+  for(let y=COURT.netTop;y<COURT.floorY;y+=4)px(c,COURT.netX-11,y,23,1,'#39466f');
+  for(let x=COURT.netX-10;x<=COURT.netX+10;x+=4)px(c,x,COURT.netTop,1,nh,'#39466f');
+  px(c,COURT.netX-11,COURT.netTop,23,1,'#dfe6ff');
+  px(c,COURT.netX-1,COURT.netTop-1,3,2,'#eef2ff');
+  px(c,COURT.netX-12,COURT.netTop,2,nh,'#8f9bc4');
+  px(c,COURT.netX+11,COURT.netTop,2,nh,'#8f9bc4');
+}
+function drawPerson(c,x,base,skin,shirt,racket,dir){
+  px(c,x-9,base-1,18,2,'rgba(0,0,0,.18)');
+  px(c,x-5,base-18,4,18,'#2b3a5c');
+  px(c,x+1,base-18,5,18,'#2b3a5c');
+  px(c,x-7,base-36,14,19,shirt);
+  px(c,x-4,base-48,9,9,skin);
+  px(c,x-5,base-51,11,4,'#2a2118');
+  const sw=(dir>0&&G)?(G.swing||0):0;
+  const ax=x+dir*(7+sw*5), ay=base-34-sw*12;
+  px(c,x+dir*5,base-33,3,3,skin);
+  px(c,ax,ay+2,2,12,'#d9d9d9');
+  px(c,ax-4,ay-7,9,9,racket);
+  px(c,ax-2,ay-5,5,5,shirt);
+}
+function drawTrail(c){
+  const n=G.trail.length;
+  G.trail.forEach((p,i)=>{
+    if(i>=n-1)return;
+    const a=((i+1)/n*0.3).toFixed(2);
+    px(c,p.x-1,p.y-1,2,2,'rgba(255,255,255,'+a+')');
+  });
+}
+function drawBall(c){
+  const b=G.ball;
+  const h=clamp((COURT.floorY-b.y)/(COURT.floorY-COURT.hangY),0,1);
+  px(c,b.x-3,COURT.floorY-1,7,2,'rgba(0,0,0,'+(0.06+0.16*(1-h)).toFixed(2)+')');
+  if(G.phase==='return'&&G.swing>0.45){
+    px(c,b.x-8,b.y,5,1,'rgba(255,255,255,.65)');
+    px(c,b.x-12,b.y+2,7,1,'rgba(255,255,255,.35)');
+  }
+  px(c,b.x-1,b.y-1,3,3,'#fdf6d8');
+  px(c,b.x,b.y-1,1,1,'#ffffff');
+}
+function drawParticles(c){G.particles.forEach(p=>px(c,p.x,p.y,2,2,p.c))}
+/* 冲击环：杀球大而快，平抽小而短 */
+function drawRings(c){
+  G.rings.forEach(r=>{
+    const a=(r.life/16*0.75).toFixed(2);
+    c.strokeStyle='rgba(255,255,255,'+a+')';
+    c.lineWidth=1;
+    c.beginPath();c.arc(r.x,r.y,r.r,0,Math.PI*2);c.stroke();
+  });
+}
+/* 杀球的速度线和爆闪；平抽的一条横线；挑高的上挑箭头 */
+function drawHitFx(c){
+  if(G.hitFx<=0)return;
+  const a=G.hitFx;
+  if(G.hitKind==='smash'){
+    for(let i=0;i<5;i++){
+      const y=COURT.floorY-74+i*7,len=10+Math.round(a*26);
+      px(c,COURT.leftX-len-4,y,Math.round(len*0.7),1,'rgba(255,214,102,'+(a*0.85).toFixed(2)+')');
+      px(c,COURT.leftX+6,y,Math.round(len*0.4),1,'rgba(255,214,102,'+(a*0.6).toFixed(2)+')');
+    }
+    px(c,COURT.leftX-2,COURT.floorY-74,6,6,'rgba(255,246,200,'+a.toFixed(2)+')');
+  }else if(G.hitKind==='drive'){
+    px(c,COURT.leftX-28,COURT.floorY-70,34,1,'rgba(159,230,255,'+(a*0.9).toFixed(2)+')');
+    px(c,COURT.leftX-20,COURT.floorY-72,20,1,'rgba(159,230,255,'+(a*0.5).toFixed(2)+')');
+  }else if(G.hitKind==='lift'){
+    for(let i=1;i<=4;i++){
+      px(c,COURT.leftX+4+i*3,COURT.floorY-70-i*5,3,3,'rgba(201,205,240,'+(a*0.8).toFixed(2)+')');
+    }
+  }
+}
+function drawGame(){
+  const c=gctx;
+  c.save();
+  let sx=0,sy=0;
+  if(G.shake>0.3){sx=(Math.random()*2-1)*G.shake;sy=(Math.random()*2-1)*G.shake}
+  c.translate(Math.round(sx),Math.round(sy));
+  drawBackground(c);
+  drawCourt(c);
+  drawPerson(c,COURT.leftX,COURT.floorY,'#f2c9a0','#2f6b4a','#ffd166',1);
+  drawPerson(c,COURT.rightX,COURT.floorY,'#e8b48c','#7a3f5a','#e85d75',-1);
+  drawTrail(c);
+  drawBall(c);
+  drawHitFx(c);
+  drawParticles(c);
+  drawRings(c);
+  c.restore();
+  if(G.flash>0){c.fillStyle='rgba(255,255,255,'+(G.flash*0.45).toFixed(2)+')';c.fillRect(0,0,GW,GH)}
+}
+
+function gameOnKey(e){
+  if(!G||!G.running||G.phase!=='type')return;
+  if(e.key==='Backspace'){e.preventDefault();if(G.pos>0)G.pos--;paintGameWord();return}
+  if(e.key.length!==1||e.key==='Enter')return;
+  e.preventDefault();
+  const want=G.word[G.pos];
+  if(e.key===want){
+    G.keysOk++;G.pos++;sfxKey(G.combo);
+    if(G.pos>=G.word.length){doHit();return}
+  }else{
+    G.keysBad++;
+    const el=$('#gameWord .ch.cur');
+    if(el){el.classList.add('bad');setTimeout(()=>el&&el.classList.remove('bad'),160)}
+    gameKB.shake(keyForChar(want).k);
+  }
+  paintGameWord();
+}
+function finishGame(){
+  if(!G)return;
+  const g=G;
+  stopGame();
+  const acc=(g.keysOk+g.keysBad)>0?Math.round(g.keysOk/(g.keysOk+g.keysBad)*100):100;
+  const prev=loadGameBest();
+  const isBest=!prev||g.catches>prev.catches;
+  if(isBest)saveGameBest({catches:g.catches,bestCombo:g.bestCombo,smashes:g.smashes,acc:acc,t:Date.now()});
+  const cuts=g.diff.starCuts;
+  const stars=g.catches>=cuts[0]?3:g.catches>=cuts[1]?2:g.catches>=cuts[2]?1:0;
+  $('#grStars').textContent=stars===3?'⭐⭐⭐':stars===2?'⭐⭐':stars===1?'⭐':'💪';
+  /* 接住球数相对三星门槛换算档位：达到三星门槛即最高档，其余按比例递进 */
+  const ratio=clamp(g.catches/cuts[0],0,1);
+  const tierMax=EN_SPEED_ICONS.length-1;
+  const tierIdx=Math.min(tierMax,Math.floor(ratio*(tierMax+1)));
+  $('#grTierIcon').textContent=EN_SPEED_ICONS[tierIdx];
+  $('#grTierName').textContent=EN_SPEED_LABELS[tierIdx];
+  $('#grStats').innerHTML=
+    '<div class="stat-cell"><div class="v">'+g.catches+'</div><div class="k">接住球数</div></div>'+
+    '<div class="stat-cell"><div class="v">'+g.bestCombo+'</div><div class="k">最长连击</div></div>'+
+    '<div class="stat-cell"><div class="v">'+g.smashes+'</div><div class="k">杀球</div></div>'+
+    '<div class="stat-cell"><div class="v">'+g.drives+'</div><div class="k">平抽</div></div>'+
+    '<div class="stat-cell"><div class="v">'+g.lifts+'</div><div class="k">挑高</div></div>'+
+    '<div class="stat-cell"><div class="v">'+acc+'%</div><div class="k">击键正确率</div></div>';
+  const dname=g.diff.icon+' '+g.diff.name;
+  if(prev){
+    const diff=g.catches-prev.catches;
+    $('#grNext').textContent=dname+' · '+(isBest?'刷新纪录！上次 '+prev.catches+' 个':(diff===0?'和上次一样，再来一局试试':'比上次少 '+Math.abs(diff)+' 个，上次是 '+prev.catches+' 个'));
+  }else{
+    $('#grNext').textContent=dname+' · 第一次挑战这个难度';
+  }
+  let msg;
+  if(g.catches===0)msg='先别急，看清楚单词再出手，慢慢来。';
+  else if(isBest)msg='比上次更稳了，这就是进步。';
+  else if(acc<85)msg='准确率再高一点，球就不会漏。';
+  else if(g.smashes===0)msg='打快一点就能杀球，试试早点出手。';
+  else msg='节奏不错，继续练，球会越打越快。';
+  $('#grMsg').textContent=msg;
+  showPage('page-game-result');
+}
+/* 难度选择页 */
+function renderGameDiff(){
+  const bestAll=loadAllGameBest();
+  $('#gameDiffList').innerHTML=Object.keys(GAME_DIFF).map(k=>{
+    const d=GAME_DIFF[k];
+    const b=bestAll[k];
+    /* 右侧统一显示难度星级；最好成绩跟在说明文字后面，三档信息结构一致 */
+    const desc=d.desc+(b?' · 最好 '+b.catches+' 个':' · 还没挑战');
+    return '<button class="level-item" data-diff="'+d.key+'">'+
+      '<div class="lv">'+d.icon+'</div>'+
+      '<div><div class="lt">'+d.name+'</div><div class="ld">'+desc+'</div></div>'+
+      '<div class="ls">'+d.stars+'</div>'+
+    '</button>';
+  }).join('');
+  $$('#gameDiffList .level-item').forEach(it=>{
+    it.onclick=()=>startGame(it.dataset.diff);
+  });
+}
+/* 档位表 HTML：区间下界按上一档上限 +1，最后一档标注“及以上”
+   中英文共用这一个渲染函数，保证两处说明页格式一致。 */
+function tierTableHTML(levels,labels,icons){
+  let prev=0,rows='';
+  levels.forEach((lv,i)=>{
+    const lo=i===0?0:prev+1;
+    const hi=lv.max;
+    const range=(i===levels.length-1)?(lo+'-'+hi+' 及以上'):(lo+'-'+hi);
+    rows+='<div class="tier-cell'+(i===levels.length-1?' top':'')+'">'+
+      '<span class="tc-icon">'+icons[i]+'</span>'+
+      '<span class="tc-txt"><span class="tc-name">'+labels[i]+'</span>'+
+      '<span class="tc-range">'+range+' 字符/分</span></span>'+
+    '</div>';
+    prev=hi;
+  });
+  return rows;
+}
+/* 羽毛球说明页：玩法、四种击球、难度时长、以及完整的 15 档速度档位表 */
+function renderGameHelp(){
+  /* 难度与时长 */
+  $('#helpDiff').innerHTML=Object.keys(GAME_DIFF).map(k=>{
+    const d=GAME_DIFF[k];
+    return '<div class="diff-help-row"><b>'+d.icon+' '+d.name+'</b>'+
+      '<span>'+Math.round(d.roundMs/1000)+' 秒 · 三星需接住 '+d.starCuts[0]+' 球</span></div>';
+  }).join('');
+  $('#helpTiers').innerHTML=tierTableHTML(EN_SPEED_FEEDBACK,EN_SPEED_LABELS,EN_SPEED_ICONS);
+}
+/* 首页说明页：五种练习模式的玩法、指法练习、以及中英文两套速度档位 */
+function renderHelp(){
+  $('#helpTiersEn').innerHTML=tierTableHTML(EN_SPEED_FEEDBACK,EN_SPEED_LABELS,EN_SPEED_ICONS);
+  $('#helpTiersCn').innerHTML=tierTableHTML(CN_SPEED_FEEDBACK,CN_SPEED_LABELS,CN_SPEED_ICONS);
+  $('#helpFingerLevels').innerHTML=FINGER_LEVELS.map(lv=>
+    '<div class="hit-row"><b>第 '+lv.n+' 关 · '+lv.t+'</b><span>'+lv.d+'</span></div>').join('');
+}
+$('#btnGameMode').onclick=()=>{renderGameDiff();showPage('page-game-diff')};
+$('#btnFingerMode').onclick=()=>{state.pick={cat:'finger'};renderLevel();showPage('page-level')};
+$('#btnHelp').onclick=()=>{renderHelp();showPage('page-help')};
+$('#bhBack').onclick=()=>showPage('page-home');
+$('#gdHelp').onclick=()=>{renderGameHelp();showPage('page-game-help')};
+$('#ghBack').onclick=()=>showPage('page-game-diff');
+$('#gdBack').onclick=()=>showPage('page-home');
+$('#gQuit').onclick=()=>{stopGame();showPage('page-home')};
+$('#grAgain').onclick=()=>startGame(G.gameDiff||'easy');
+$('#grHome').onclick=()=>showPage('page-home');
+window.addEventListener('keydown',gameOnKey);
+
+/* ================= 事件绑定 ================= */
+$('#btnLogin').onclick=doLogin;
+$('#btnReg').onclick=doReg;
+$('#authPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+$('#btnSwitch').onclick=backToAuth;
+$('#btnBackHome').onclick=()=>enterHome();
+$('#btnBackHome2').onclick=()=>enterHome();
+$('#btnHome').onclick=()=>enterHome();
+$('#btnStats').onclick=()=>{statsFilter='all';statsDay='';renderStats();showPage('page-stats')};
+$('#statsDay').onchange=e=>{statsDay=e.target.value;renderStats()};
+$('#btnAgain').onclick=()=>{if(state.lastPick)startPractice(state.lastPick)};
+$('#btnQuit').onclick=()=>{
+  stopTiming();
+  state.mode=null;state.start=0;
+  $('#cnInput').blur();$('#cnInput').value='';$('#pracHint').textContent='';
+  $('#fingerCoach').hidden=true;
+  kbClear();
+  toast('练习已结束，休息一下');
+  showPage('page-level');
+  renderLevel();
+};
+$$('.card').forEach(c=>{
+  c.onclick=()=>{state.pick={cat:c.dataset.cat};renderLevel();showPage('page-level')};
+});
+function renderLevel(){
+  const cat=state.pick?state.pick.cat:'en_word';
+  const isFinger=cat==='finger';
+  const levels=isFinger?FINGER_LEVELS:cat==='py_code'?PY_LEVELS:cat==='cn_word'?CN_WORD_LEVELS:cat.indexOf('cn_')===0?CN_LEVELS:LEVELS;
+  $('#page-level').classList.toggle('python-level-page',cat==='py_code');
+  $('#levelTitle').textContent=CATS[cat].emoji+' '+CATS[cat].name+' · 选择难度';
+  $('#levelList').innerHTML=levels.map(lv=>{
+    /* 指法关卡用数字徽标，避免和别的模式的星级语义混淆 */
+    const badge=isFinger?('第'+lv.n+'关'):(lv.n===1?'🌱':lv.n===2?'🌿':lv.n===3?'🔥':'🚀');
+    return '<button class="level-item'+(cat==='py_code'?' python-level':'')+(isFinger?' finger-level':'')+'" data-lv="'+lv.n+'"><div class="lv">'+badge+'</div>'+
+      '<div><div class="lt">'+lv.t+'</div><div class="ld">'+lv.d+'</div></div><div class="ls">'+lv.s+'</div></button>';
+  }).join('');
+  $$('#levelList .level-item').forEach(it=>{
+    it.onclick=()=>startPractice({cat:cat,level:+it.dataset.lv});
+  });
+}
+window.addEventListener('keydown',onKey);
+/* 松开 Shift 后清掉侧别记录，避免下一串误判成「还按着 Shift」 */
+window.addEventListener('keyup',e=>{if(e.key==='Shift'&&FG)FG.shiftSide=null});
+$('#cnInput').addEventListener('input',onCnInput);
+$('#cnInput').addEventListener('compositionstart',()=>{if(state.mode==='cn')CN.composing=true});
+$('#cnInput').addEventListener('compositionend',()=>{if(state.mode==='cn'){CN.composing=false;applyCnInput()}});
+window.addEventListener('click',()=>{if(state.mode==='cn')$('#cnInput').focus()});
+window.addEventListener('beforeunload',()=>{
+  stopTiming();
+  if(state.mode==='cn'){state.mode=null;$('#cnInput').value=''}
+});
+/* ================= 初始化 ================= */
+initVersionBadge();
+refreshUserList();
+refreshTopbar();
+if(CUR&&DB.users[CUR]){
+  enterHome();
+}else{
+  showPage('page-auth');
+}
+</script>
+</body>
+</html>
